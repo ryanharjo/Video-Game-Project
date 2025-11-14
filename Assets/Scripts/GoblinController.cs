@@ -1,45 +1,27 @@
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class GoblinController : MonoBehaviour
 {
-    public float playerSpeed = 5.0f;
-    public float jumpHeight = 2.0f;
-    public float gravityValue = -9.81f;
+    public float speed = 6f;
+    public float turnSmoothSpeed = 0.1f;
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-
-    void Start()
-    {
-        controller = GetComponent<CharacterController>();
-    }
+    float turnSmoothVelocity;
 
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        Vector3 direction = new Vector3(h, 0, v).normalized;
+
+        if (direction.magnitude >= 0.1f)
         {
-            playerVelocity.y = 0f;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothSpeed);
+            transform.rotation = Quaternion.Euler(0, angle, 0);
+
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
-
-        
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-       
-        move = Vector3.ClampMagnitude(move, 1f);
-
-        
-        controller.Move(transform.TransformDirection(move) * playerSpeed * Time.deltaTime);
-
-        
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-        {
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
-        }
-
-        
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
     }
 }

@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Axe
-  - Target
+  - Ground
   layers:
   - Default
   - TransparentFX
