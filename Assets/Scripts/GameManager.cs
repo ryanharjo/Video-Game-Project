@@ -1,51 +1,35 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public int score = 0;
-    public Text scoreText;
-    public Text throwsText;
-    public Image cooldownImage; 
-    [HideInInspector] public bool isPaused = false;
+    public static GameManager instance;
 
-    void Start()
+    public int score = 0;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
+
+    public float timeLeft = 60f;
+
+    void Awake()
     {
-        UpdateScoreUI();
+        instance = this;
+    }
+
+    void Update()
+    {
+        timeLeft -= Time.deltaTime;
+        timerText.text = "Time: " + Mathf.Ceil(timeLeft);
+
+        if (timeLeft <= 0)
+        {
+            Time.timeScale = 0;
+        }
     }
 
     public void AddScore(int amount)
     {
         score += amount;
-        UpdateScoreUI();
-    }
-
-    public void UpdateScoreUI()
-    {
-        if (scoreText != null) scoreText.text = "Score: " + score;
-    }
-
-    public void UpdateThrowsUI(int throwsLeft)
-    {
-        if (throwsText != null) throwsText.text = "Throws: " + throwsLeft;
-    }
-
-    public void ShowCooldown(float duration)
-    {
-        if (cooldownImage == null) return;
-        StopAllCoroutines();
-        StartCoroutine(CooldownFill(duration));
-    }
-
-    System.Collections.IEnumerator CooldownFill(float duration)
-    {
-        float t = 0f;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            cooldownImage.fillAmount = Mathf.Clamp01(t / duration);
-            yield return null;
-        }
-        cooldownImage.fillAmount = 0f;
+        scoreText.text = "Coins: " + score;
     }
 }
