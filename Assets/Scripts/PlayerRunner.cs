@@ -131,7 +131,7 @@ public class PlayerRunner : MonoBehaviour
     {
         if (hit.collider.CompareTag("Obstacle"))
         {
-            FindObjectOfType<GameManager>()?.GameOver();
+            FindFirstObjectByType<GameManager>()?.GameOver();
         }
     }
 }

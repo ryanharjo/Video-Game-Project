@@ -18,8 +18,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        player = FindObjectOfType<PlayerRunner>();
-        spawner = FindObjectOfType<ObstacleSpawner>();
+        player = FindFirstObjectByType<PlayerRunner>();
+        spawner = FindFirstObjectByType<ObstacleSpawner>();
         gameOverPanel.SetActive(false);
     }
 
@@ -44,7 +44,11 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         // disable player control
         if (player != null)
+        {
             player.enabled = false;
+        }
+           
+        Time.timeScale = 0f;
     }
 
     public void Restart()

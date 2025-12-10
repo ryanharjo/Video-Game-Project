@@ -8,7 +8,7 @@ public class Ground : MonoBehaviour
 
     void Start()
     {
-        gm = FindObjectOfType<GameManager>();
+        gm = FindFirstObjectByType<GameManager>();
     }
 
     private void OnTriggerExit(Collider other)
