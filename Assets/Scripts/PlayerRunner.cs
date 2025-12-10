@@ -2,125 +2,136 @@ using UnityEngine;
 
 public class PlayerRunner : MonoBehaviour
 {
-    // Movement speeds
-    public float forwardSpeed = 10f;
-    public float laneDistance = 3f;
-    public float dodgeSpeed = 10f;
+    [Header("Movement")]
+    public float forwardSpeed = 8f;
+    public float laneDistance = 2f;
+    public float laneChangeSpeed = 8f;
 
-    // Jump / gravity
+    [Header("Jumping")]
     public float jumpForce = 8f;
     public float gravity = -20f;
-    private float verticalVelocity;
 
-    // Slide settings
-    public float slideDuration = 0.7f;
+    [Header("Sliding")]
+    public float slideDuration = 0.8f;
+    public float slideCooldown = 1.2f;
+    public float slideHeight = 1.0f;   // height while sliding
+    private float normalHeight = 2.0f; // default capsule height
+    private float slideTimer = 0f;
+    private float cooldownTimer = 0f;
     private bool isSliding = false;
-    private float slideTimer;
-    private float originalHeight;
-    private Vector3 originalCenter;
 
-    private CharacterController controller;
-    private int targetLane = 1;  // 0 = left, 1 = middle, 2 = right
+    private CharacterController cc;
+    private int targetLane = 1;
+    private float verticalVelocity = 0f;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        originalHeight = controller.height;
-        originalCenter = controller.center;
+        cc = GetComponent<CharacterController>();
+        normalHeight = cc.height;
     }
 
     void Update()
     {
-        // ==============================
-        // 1. Lane Movement (Left/Right)
-        // ==============================
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            ChangeLane(-1);
+        HandleLaneSwitching();
+        HandleJump();
+        HandleSlide();
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            ChangeLane(1);
+        // forward movement
+        Vector3 forward = transform.forward * forwardSpeed;
 
-        float targetX = (targetLane - 1) * laneDistance;
+        // apply gravity
+        verticalVelocity += gravity * Time.deltaTime;
 
+        Vector3 move = forward + Vector3.up * verticalVelocity;
+        cc.Move(move * Time.deltaTime);
 
-        // ==============================
-        // 2. Jump Input
-        // ==============================
-        if (controller.isGrounded)
-        {
-            if (!isSliding && Input.GetKeyDown(KeyCode.UpArrow))
-                verticalVelocity = jumpForce;
-        }
-
-
-        // ==============================
-        // 3. Slide Input
-        // ==============================
-        if (!isSliding && controller.isGrounded && Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            StartSlide();
-        }
-
-        if (isSliding)
-        {
-            slideTimer -= Time.deltaTime;
-            if (slideTimer <= 0f)
-                StopSlide();
-        }
-
-
-        // ==============================
-        // 4. Apply Gravity (always)
-        // ==============================
-        if (!controller.isGrounded)
-            verticalVelocity += gravity * Time.deltaTime;
-        else if (verticalVelocity < -2f)
-            verticalVelocity = -2f;
-
-
-        // ==============================
-        // 5. Build Final Move Vector
-        // ==============================
-        Vector3 move = Vector3.forward * forwardSpeed;  // forward run
-
-        // Horizontal lane movement
-        float newX = Mathf.Lerp(transform.position.x, targetX, Time.deltaTime * dodgeSpeed);
-        move.x = (newX - transform.position.x) / Time.deltaTime;
-
-        // Vertical (jump or slide)
-        move.y = verticalVelocity;
-
-
-        // ==============================
-        // 6. Apply Move
-        // ==============================
-        controller.Move(move * Time.deltaTime);
+        // smooth lane movement
+        float desiredX = (targetLane - 1) * laneDistance;
+        Vector3 newPos = transform.position;
+        newPos.x = Mathf.Lerp(transform.position.x, desiredX, Time.deltaTime * laneChangeSpeed);
+        transform.position = newPos;
     }
 
-
-    // Change which lane you're in
-    void ChangeLane(int direction)
+    // -------------------------
+    // LANE SWITCHING
+    // -------------------------
+    void HandleLaneSwitching()
     {
-        targetLane += direction;
-        targetLane = Mathf.Clamp(targetLane, 0, 2);
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            targetLane = Mathf.Max(0, targetLane - 1);
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            targetLane = Mathf.Min(2, targetLane + 1);
     }
 
+    // -------------------------
+    // JUMP
+    // -------------------------
+    void HandleJump()
+    {
+        if (cc.isGrounded && !isSliding)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                verticalVelocity = jumpForce;
+            }
+            else
+            {
+                verticalVelocity = -1f; // small grounding force
+            }
+        }
+    }
 
-    // ==============================
-    // Slide Functions
-    // ==============================
+    // -------------------------
+    // SLIDE
+    // -------------------------
+    void HandleSlide()
+    {
+        cooldownTimer -= Time.deltaTime;
+        slideTimer -= Time.deltaTime;
+
+        // Start sliding
+        if (!isSliding && cooldownTimer <= 0f)
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+            {
+                StartSlide();
+            }
+        }
+
+        // End sliding
+        if (isSliding && slideTimer <= 0f)
+        {
+            EndSlide();
+        }
+    }
+
     void StartSlide()
     {
         isSliding = true;
         slideTimer = slideDuration;
-        controller.height = originalHeight / 2f;
-        controller.center = new Vector3(originalCenter.x, originalCenter.y / 2f, originalCenter.z);
+        cooldownTimer = slideCooldown;
+
+        // change collider height
+        cc.height = slideHeight;
+        cc.center = new Vector3(0, slideHeight * 0.5f, 0);
+
+        // optional animation trigger:
+        // animator.SetTrigger("Slide");
     }
 
-    void StopSlide()
+    void EndSlide()
     {
         isSliding = false;
-        controller.height = originalHeight;
-        controller.center = originalCenter;
+        cc.height = normalHeight;
+        cc.center = new Vector3(0, normalHeight * 0.5f, 0);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Obstacle"))
+        {
+            FindObjectOfType<GameManager>()?.GameOver();
+        }
     }
 }

@@ -2,19 +2,22 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour
 {
-    public float moveSpeed = 10f;
-    public float resetZ = -20f;
-    public float startZ = 40f;
+    public float tileLength = 30f;
+    public Transform spawnPoint;
+    private GameManager gm;
 
-    void Update()
+    void Start()
     {
-        transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+        gm = FindObjectOfType<GameManager>();
+    }
 
-        if (transform.position.z < resetZ)
+    private void OnTriggerExit(Collider other)
+    {
+        // When player leaves a tile, spawn/recycle it
+        if (other.CompareTag("Player"))
         {
-            Vector3 pos = transform.position;
-            pos.z = startZ;
-            transform.position = pos;
+            gm.SpawnNextTile();
+            Destroy(gameObject, 2f);
         }
     }
 }
