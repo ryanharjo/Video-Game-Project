@@ -2,44 +2,33 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject[] obstaclePrefabs;
-    public float spawnZ = 40f;
-    public float spawnInterval = 1.2f;
-    public float spawnX = 2f; // lane offset
-    public int lanes = 3;
-    public float startDelay = 1f;
-
-    private float timer = 0f;
-    private bool spawning = true;
+    public GameObject obstaclePrefab;
 
     void Start()
     {
-        timer = -startDelay;
-    }
-
-    void Update()
-    {
-        if (!spawning) return;
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
-        {
-            SpawnObstacle();
-            timer = 0f;
-        }
+        SpawnObstacle();
     }
 
     void SpawnObstacle()
     {
-        // pick lane 0..lanes-1
-        int lane = Random.Range(0, lanes);
-        float x = (lane - (lanes / 2)) * spawnX;
-        Vector3 pos = new Vector3(x, 0.5f, transform.position.z + spawnZ);
-        GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
-        Instantiate(prefab, pos, Quaternion.identity);
-    }
+        // Choose a random point on the tile
+        // Assuming tile is 10 wide (-5 to 5) and 50 long (-25 to 25)
+        // We leave some buffer so it doesn't spawn exactly on the edge
 
-    public void StopSpawning()
-    {
-        spawning = false;
+        int numberOfObstacles = 1; // How many obstacles per tile?
+
+        for (int i = 0; i < numberOfObstacles; i++)
+        {
+            float randomX = Random.Range(-4f, 4f);
+            float randomZ = Random.Range(-20f, 20f);
+
+            Vector3 spawnPos = transform.position + new Vector3(randomX, 1, randomZ);
+
+            // Create the object in the world first (it will use its own normal scale)
+            GameObject obs = Instantiate(obstaclePrefab, spawnPos, Quaternion.identity);
+
+            // Parent it to the tile, but pass 'true' to keep its world scale
+            obs.transform.SetParent(transform, true);
+        }
     }
 }
