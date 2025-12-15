@@ -13692,7 +13692,7 @@ GameObject:
   - component: {fileID: 5426800896525391507}
   - component: {fileID: 6519515217527265568}
   - component: {fileID: 6771294057173394291}
-  - component: {fileID: 1651582811017200612}
+  - component: {fileID: 9088164888911501297}
   m_Layer: 0
   m_Name: GroundTile
   m_TagString: Untagged
@@ -13709,7 +13709,7 @@ Transform:
   m_GameObject: {fileID: 8749132866461939652}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.32741, y: 3.54469, z: -352.18787}
+  m_LocalPosition: {x: 65.32741, y: 2.93, z: -352.18787}
   m_LocalScale: {x: 10, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13794,7 +13794,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1651582811017200612
+--- !u!114 &9088164888911501297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

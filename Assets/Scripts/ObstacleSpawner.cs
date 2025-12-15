@@ -15,7 +15,7 @@ public class ObstacleSpawner : MonoBehaviour
         // Assuming tile is 10 wide (-5 to 5) and 50 long (-25 to 25)
         // We leave some buffer so it doesn't spawn exactly on the edge
 
-        int numberOfObstacles = 1; // How many obstacles per tile?
+        int numberOfObstacles = 2; // How many obstacles per tile?
 
         for (int i = 0; i < numberOfObstacles; i++)
         {
