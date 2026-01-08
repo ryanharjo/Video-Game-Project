@@ -27,4 +27,9 @@ public class PlayerRunner : MonoBehaviour
             // UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 500f);
+    }
 }
