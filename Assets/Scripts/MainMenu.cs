@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [Header("Scene")]
-    public string gameSceneName = "new scene";
+    public string gameSceneName = "New Scene";
 
     [Header("Panels")]
     public GameObject mainPanel;
