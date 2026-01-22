@@ -12,6 +12,12 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject settingsPanel;
 
+    private void Start()
+    {
+        // Ensures the menu starts in the right state
+        ShowMain();
+    }
+
     // ===== BUTTON FUNCTIONS =====
 
     public void PlayGame()
@@ -37,6 +43,12 @@ public class MainMenu : MonoBehaviour
     public void Back()
     {
         ShowMain();
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game Exiting..."); // Just to see it working in the editor
+        Application.Quit();
     }
 
     // ===== HELPERS =====

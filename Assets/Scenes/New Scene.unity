@@ -685,15 +685,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Score: 0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 8b29aaa3eec7468097ff07adfcf29ac9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0dfc11c6ce6a38249a45f6f7fe8a375d, type: 2}
+  m_sharedMaterial: {fileID: 1610603750151710784, guid: 0dfc11c6ce6a38249a45f6f7fe8a375d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294956086
+  m_fontColor: {r: 0.21176471, g: 0.83137256, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1012,9 +1012,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1761645611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008fa53c35896aa468556533c6f7eca0, type: 3}
+  m_Script: {fileID: 11500000, guid: cc998ee2d6f20a14b9f285ee9af1cb55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
+  isGameOver: 0
+  isPaused: 0
+  score: 0
+  highScore: 0
 --- !u!114 &1761645615
 MonoBehaviour:
   m_ObjectHideFlags: 0
