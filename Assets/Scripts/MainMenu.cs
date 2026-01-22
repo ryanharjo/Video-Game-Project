@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject settingsPanel;
 
-    // ===== BUTTON FUNCTIONS =====
+    
 
     public void PlayGame()
     {
@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
         ShowMain();
     }
 
-    // ===== HELPERS =====
+    
     void ShowMain()
     {
         mainPanel.SetActive(true);
