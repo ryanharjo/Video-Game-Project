@@ -172,6 +172,10 @@ PrefabInstance:
       value: SK_SciFiTrooperManV3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 639b6ce73b347e5429ac0526c9c29094, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 639b6ce73b347e5429ac0526c9c29094, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -179,6 +183,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 40d1f923f470b45489fc71fce5d0e42b, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 639b6ce73b347e5429ac0526c9c29094, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 639b6ce73b347e5429ac0526c9c29094, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
@@ -807,11 +815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a38357b19dae4b4a8c243f8b080243e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRunner
-  forwardSpeed: 10
-  laneDistance: 3
-  laneSwitchSpeed: 10
-  jumpForce: 8
   gravity: -20
+  jumpForce: 8
 --- !u!143 &1163152993
 CharacterController:
   m_ObjectHideFlags: 0
@@ -875,20 +880,44 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1163152992}
+        m_TargetAssemblyTypeName: PlayerRunner, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 22f82b73-a7d5-4ab9-bd8e-b3448b734a69
-    m_ActionName: 'New action map/JUMP[/Keyboard/space]'
+    m_ActionName: 'New action map/JUMP[/Keyboard/space,/Mouse/leftButton]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1163152992}
+        m_TargetAssemblyTypeName: PlayerRunner, Assembly-CSharp
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2d6d0bc1-7e5b-4ff7-96b2-05c4c961ac74
     m_ActionName: 'New action map/MOVE[/Keyboard/leftArrow,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 13c2d976-ffe7-456d-a537-b2761b5e2a8e
     m_ActionName: 'New action map/PAUSE[/Keyboard/escape]'
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: New Control Scheme
-  m_DefaultActionMap: New action map
+  m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1332910241

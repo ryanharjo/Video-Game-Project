@@ -12,17 +12,14 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject settingsPanel;
 
-<<<<<<< HEAD
-    
-=======
+
     private void Start()
     {
         // Ensures the menu starts in the right state
         ShowMain();
     }
 
-    // ===== BUTTON FUNCTIONS =====
->>>>>>> 190ad1d0becc5f92732e031bb6ae940b93d67d97
+  
 
     public void PlayGame()
     {
@@ -49,17 +46,14 @@ public class MainMenu : MonoBehaviour
         ShowMain();
     }
 
-<<<<<<< HEAD
-    
-=======
+
     public void QuitGame()
     {
         Debug.Log("Game Exiting..."); // Just to see it working in the editor
         Application.Quit();
     }
 
-    // ===== HELPERS =====
->>>>>>> 190ad1d0becc5f92732e031bb6ae940b93d67d97
+  
     void ShowMain()
     {
         mainPanel.SetActive(true);

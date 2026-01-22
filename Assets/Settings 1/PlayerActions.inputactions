@@ -3,7 +3,7 @@
     "name": "PlayerActions",
     "maps": [
         {
-            "name": "New action map",
+            "name": "Gameplay",
             "id": "36b4fd6e-804f-446c-9824-06a3e901ccfd",
             "actions": [
                 {
@@ -13,7 +13,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "MOVE",
@@ -22,7 +22,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "PAUSE",
@@ -31,7 +31,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -70,28 +70,6 @@
                 },
                 {
                     "name": "",
-                    "id": "10ba1a1a-7f98-4111-88ff-698a8ee2f896",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "MOVE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "245fb870-d06c-48d1-8bb7-0b9d928f4aeb",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "Press(behavior=2)",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "MOVE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f64b3b7b-2fbd-4821-a247-7302f810320d",
                     "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
@@ -108,6 +86,39 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";New Control Scheme",
+                    "action": "MOVE",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d5ba745-4cb5-4bdc-885c-c1db6ac00bf1",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";New Control Scheme",
+                    "action": "MOVE",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3ff2a1e-d6b1-406e-b015-d3ecea2d33f4",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";New Control Scheme",
+                    "action": "MOVE",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0f1ac07f-7ae1-4a17-b75e-23eed7b68a5f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "MOVE",
                     "isComposite": false,
                     "isPartOfComposite": false
