@@ -3,100 +3,85 @@ using UnityEngine.InputSystem;
 
 public class PlayerRunner : MonoBehaviour
 {
-    // Movement input
-    private float horizontal;
-    private float vertical;
+    
+    public float forwardSpeed = 10f;
+    public float laneDistance = 3f;
+    public float laneSwitchSpeed = 15f;
 
-    // Jump variables
-    private float jumpTime = 1.0f;
-    private float jumpTimer;
-    private bool hasJumped = false;
-    private bool canJump = true;
-
-    // Optional speed property (for powerups)
-    public float PlayerSpeed { get; set; } = 10f;
-
-    // Physics
-    public float gravity = -20f;
+    
     public float jumpForce = 6f;
+    public float gravity = -20f;
 
     private CharacterController controller;
-    private Animator anim;
+    private Vector3 direction; 
+    private int currentLane = 1; 
 
-    private float verticalVelocity;
-    private bool groundedPlayer;
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction jumpAction;
 
-    void Start()
+    
+    private bool canSwitchLane = true;
+
+    void Awake()
     {
         controller = GetComponent<CharacterController>();
-        anim = GetComponentInChildren<Animator>();
+        playerInput = GetComponent<PlayerInput>();
 
-        // Initialize jump timer
-        jumpTimer = 0.0f;
+        moveAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
     }
 
-    // New Input System - Move
-    public void Move(InputAction.CallbackContext context)
-    {
-        horizontal = context.ReadValue<Vector2>().x;
-        vertical = context.ReadValue<Vector2>().y;
-    }
-
-    // New Input System - Jump
-    public void Jump(InputAction.CallbackContext context)
-    {
-        hasJumped = context.ReadValueAsButton();
-    }
+    void OnEnable() { moveAction.Enable(); jumpAction.Enable(); }
+    void OnDisable() { moveAction.Disable(); jumpAction.Disable(); }
 
     void Update()
     {
-        groundedPlayer = controller.isGrounded;
+        HandleInput();
 
-        // Forward endless runner movement + horizontal input
-        Vector3 move = new Vector3(horizontal, 0, PlayerSpeed);
+        float targetX = (currentLane - 1) * laneDistance;
+        float newX = Mathf.Lerp(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
+        float xDelta = newX - transform.position.x;
 
-        // Stick to ground
-        if (groundedPlayer && verticalVelocity < 0)
+        if (controller.isGrounded)
         {
-            verticalVelocity = -2f;
-        }
-
-        // Jump logic (replaces Input.GetButtonDown)
-        if (hasJumped && canJump && groundedPlayer)
-        {
-            verticalVelocity = jumpForce;
-            jumpTimer = jumpTime;
-            canJump = false;
-            groundedPlayer = false;
-
-            anim.SetTrigger("Jump");
-        }
-
-        // Jump cooldown timer
-        if (canJump == false)
-        {
-            jumpTimer -= Time.deltaTime;
-        }
-
-        if (jumpTimer <= 0)
-        {
-            jumpTimer = 0;
-            canJump = true;
+            if (direction.y < 0) direction.y = -2f;
+            if (jumpAction.triggered) direction.y = jumpForce;
         }
         else
         {
-            canJump = false;
+            direction.y += gravity * Time.deltaTime;
         }
 
-        // Gravity
-        verticalVelocity += gravity * Time.deltaTime;
-        move.y = verticalVelocity;
+        direction.x = xDelta;
+        direction.z = forwardSpeed;
 
-        // Apply movement
-        controller.Move(move * Time.deltaTime);
+        controller.Move(direction * Time.deltaTime);
+    }
 
-        // Animator
-        anim.SetBool("IsGrounded", groundedPlayer);
-        anim.SetFloat("Speed", PlayerSpeed);
+    private void HandleInput()
+    {
+        float horizontalInput = moveAction.ReadValue<Vector2>().x;
+
+        
+        if (canSwitchLane)
+        {
+            if (horizontalInput > 0.5f && currentLane < 2)
+            {
+                currentLane++;
+                canSwitchLane = false;
+            }
+            else if (horizontalInput < -0.5f && currentLane > 0)
+            {
+                currentLane--;
+                canSwitchLane = false;
+            }
+        }
+
+        
+        if (Mathf.Abs(horizontalInput) < 0.1f)
+        {
+            canSwitchLane = true;
+        }
     }
 }

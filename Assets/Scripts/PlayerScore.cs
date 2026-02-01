@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerScore : MonoBehaviour
 {
     public static PlayerScore instance;
