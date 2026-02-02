@@ -6,7 +6,7 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        playerRunner = GameObject.FindObjectOfType<PlayerRunner>();
+        playerRunner = GameObject.FindFirstObjectByType<PlayerRunner>();
     }
 
     private void OnTriggerEnter(Collider other)

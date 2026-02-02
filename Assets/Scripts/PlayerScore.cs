@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class PlayerScore : MonoBehaviour
 {
     public static PlayerScore instance;
 
     public int score = 0;
-    public Text scoreText; // UI Text (Legacy) or swap to TMP later
+    public TMP_Text scoreText;
 
     private void Awake()
     {
@@ -14,6 +14,11 @@ public class PlayerScore : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        UpdateUI();
     }
 
     public void AddScore(int amount)
@@ -25,6 +30,6 @@ public class PlayerScore : MonoBehaviour
     void UpdateUI()
     {
         if (scoreText != null)
-            scoreText.text = "Score: " + score;
+            scoreText.text = "SCORE: " + score;
     }
 }
