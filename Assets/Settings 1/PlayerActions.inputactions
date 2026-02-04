@@ -81,7 +81,11 @@
                 },
                 {
                     "name": "2D Vector",
+<<<<<<< HEAD
                     "id": "1294807d-114c-4d3f-9297-e47518b035e5",
+=======
+                    "id": "7ec9b536-3f44-42f1-9472-d9aad18698a3",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -92,7 +96,11 @@
                 },
                 {
                     "name": "up",
+<<<<<<< HEAD
                     "id": "d4854c9c-3240-474d-81f5-b9c722f9ab2a",
+=======
+                    "id": "431e0d7b-f4bd-4979-97da-1463514a0adb",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "",
                     "interactions": "",
                     "processors": "",
@@ -103,7 +111,11 @@
                 },
                 {
                     "name": "down",
+<<<<<<< HEAD
                     "id": "e334489c-42d6-4b60-927d-fe53821f93b6",
+=======
+                    "id": "ab6366f6-da08-47c8-81f1-a78c58f224eb",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "",
                     "interactions": "",
                     "processors": "",
@@ -114,7 +126,11 @@
                 },
                 {
                     "name": "left",
+<<<<<<< HEAD
                     "id": "df955cbc-83d3-42ee-9019-65fc12764144",
+=======
+                    "id": "88a43744-b3c6-4b58-bad7-39fb6e51d2de",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "<Keyboard>/#(A)",
                     "interactions": "",
                     "processors": "",
@@ -125,7 +141,11 @@
                 },
                 {
                     "name": "right",
+<<<<<<< HEAD
                     "id": "3203d20e-d9bd-43f1-892f-3d1316a2b87e",
+=======
+                    "id": "53e98491-5630-4c38-b89a-1f11d5d7fec9",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "<Keyboard>/#(D)",
                     "interactions": "",
                     "processors": "",
@@ -136,7 +156,11 @@
                 },
                 {
                     "name": "2D Vector",
+<<<<<<< HEAD
                     "id": "19056d06-34ef-46a9-8da9-e7aa97982daf",
+=======
+                    "id": "08f48127-d8b6-45a9-82d2-d10610a394fd",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -147,7 +171,11 @@
                 },
                 {
                     "name": "up",
+<<<<<<< HEAD
                     "id": "d83f30fc-9108-40ed-b36a-5eac00df51cd",
+=======
+                    "id": "14767c95-d1dd-4e45-ae43-94aca5addd8d",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "",
                     "interactions": "",
                     "processors": "",
@@ -158,7 +186,11 @@
                 },
                 {
                     "name": "down",
+<<<<<<< HEAD
                     "id": "158adee4-932d-408b-9537-15495fa85b28",
+=======
+                    "id": "5c05570e-8bab-4a42-b782-2954c0dab8b1",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "",
                     "interactions": "",
                     "processors": "",
@@ -169,7 +201,11 @@
                 },
                 {
                     "name": "left",
+<<<<<<< HEAD
                     "id": "7c67b0a9-fd0b-4b8c-848f-04240fc8efd6",
+=======
+                    "id": "881fbe89-b7fb-4df3-8fb6-510d7660033d",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
@@ -180,7 +216,11 @@
                 },
                 {
                     "name": "right",
+<<<<<<< HEAD
                     "id": "7d8b48e6-f767-4bc8-89ee-9c178c122ca5",
+=======
+                    "id": "dd7068e0-fdcd-47b7-adac-68d1ff6061b1",
+>>>>>>> 888dbe20b2ae60d647ca53a2104d8ae47f4d0bfd
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
