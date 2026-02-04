@@ -6,7 +6,7 @@ public class GroundTile : MonoBehaviour
 
     private void Start()
     {
-        groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
+        groundSpawner = GameObject.FindFirstObjectByType<GroundSpawner>();
         SpawnObstacle();
     }
 

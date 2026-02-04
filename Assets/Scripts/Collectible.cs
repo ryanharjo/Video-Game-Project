@@ -8,19 +8,25 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+
+        // Safety check
+        if (PlayerScore.instance != null)
         {
-            // Add score
             PlayerScore.instance.AddScore(value);
-
-            // Play sound (optional)
-            if (collectSound != null)
-            {
-                AudioSource.PlayClipAtPoint(collectSound, transform.position);
-            }
-
-            // Destroy item
-            Destroy(gameObject);
         }
+        else
+        {
+            Debug.LogError("PlayerScore instance is missing in the scene!");
+        }
+
+        // Play sound
+        if (collectSound != null)
+        {
+            AudioSource.PlayClipAtPoint(collectSound, transform.position);
+        }
+
+        // Destroy collectible
+        Destroy(gameObject);
     }
 }
