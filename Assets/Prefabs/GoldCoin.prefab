@@ -27,14 +27,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5789947923317317188}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7110476, y: -0, z: -0, w: 0.7031439}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 60, y: 20, z: 60}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00029939, z: 0.026784}
+  m_LocalScale: {x: 60, y: 23.352001, z: 60}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6899150036683183112}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -1530.64, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2909425778498671842
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -82,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &955115968829348146
 SphereCollider:
@@ -117,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectible
   value: 10
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: cd6ca7164018f9343a76087f82d29eb0, type: 3}
 --- !u!1 &8593494573288806363
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,4 +207,5 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
