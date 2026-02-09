@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 
+
 public class PlayerScore : MonoBehaviour
 {
     public static PlayerScore instance;
