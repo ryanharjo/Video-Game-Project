@@ -9,9 +9,10 @@ public class PlayerRunner : MonoBehaviour
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
-    [Header("Jump")]
-    public float jumpForce = 7f;
+    [Header("Jump & Physics")]
+    public float jumpForce = 7.5f;
     public float gravity = -25f;
+    public float jumpBufferTime = 0.2f; // Memory for jump input
 
     [Header("Slide")]
     public float slideTime = 0.8f;
@@ -19,17 +20,15 @@ public class PlayerRunner : MonoBehaviour
 
     private CharacterController controller;
     private Animator animator;
-    private PlayerInput playerInput;
 
     private Vector3 direction;
-    private int currentLane = 1;
+    private int currentLane = 1; // 0: Left, 1: Middle, 2: Right
     private bool canSwitchLane = true;
     private bool isSliding = false;
 
-    // INPUT STATES
+    // Input States & Buffers
     private float horizontal;
-    private float vertical;
-    private bool hasJumped;
+    private float jumpBufferCounter;
     private bool hasSlid;
     private bool hasFlipped;
 
@@ -37,69 +36,56 @@ public class PlayerRunner : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        playerInput = GetComponent<PlayerInput>();
     }
 
-    // INPUT CALLBACKS (Input System)
-    public void Move(InputAction.CallbackContext context)
+    #region Input Callbacks
+    public void Move(InputAction.CallbackContext context) => MoveInput(context.ReadValue<Vector2>());
+    public void Jump(InputAction.CallbackContext context) => JumpInput(context.ReadValueAsButton());
+    public void Slide(InputAction.CallbackContext context) => SlideInput(context.ReadValueAsButton());
+    public void Flip(InputAction.CallbackContext context) => FlipInput(context.ReadValueAsButton());
+
+    public void MoveInput(Vector2 newMoveDirection) => horizontal = newMoveDirection.x;
+
+    public void JumpInput(bool pressed)
     {
-        MoveInput(context.ReadValue<Vector2>());
+        if (pressed) jumpBufferCounter = jumpBufferTime;
     }
 
-    public void Jump(InputAction.CallbackContext context)
+    public void SlideInput(bool pressed)
     {
-        JumpInput(context.ReadValueAsButton());
+        if (pressed) hasSlid = true;
     }
 
-    public void Slide(InputAction.CallbackContext context)
+    public void FlipInput(bool pressed)
     {
-        SlideInput(context.ReadValueAsButton());
+        if (pressed) hasFlipped = true;
     }
-
-    public void Flip(InputAction.CallbackContext context)
-    {
-        FlipInput(context.ReadValueAsButton());
-    }
-
-    // WRAPPERS (for mobile & testing)
-    public void MoveInput(Vector2 newMoveDirection)
-    {
-        horizontal = newMoveDirection.x;
-        vertical = newMoveDirection.y;
-    }
-
-    public void JumpInput(bool newValue)
-    {
-        hasJumped = newValue;
-    }
-
-    public void SlideInput(bool newValue)
-    {
-        hasSlid = newValue;
-    }
-
-    public void FlipInput(bool newValue)
-    {
-        hasFlipped = newValue;
-    }
+    #endregion
 
     void Update()
     {
+        // 1. Manage Timers
+        if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
+
+        // 2. Horizontal Movement (Lanes)
         HandleLaneInput();
-
         float targetX = (currentLane - 1) * laneDistance;
-        float newX = Mathf.Lerp(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
-        float xDelta = newX - transform.position.x;
 
+        // Calculate the speed needed to reach the target X this frame
+        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
+        float xVelocity = (newX - transform.position.x) / Time.deltaTime;
+
+        // 3. Vertical Movement (Jump & Gravity)
         if (controller.isGrounded)
         {
             if (direction.y < 0) direction.y = -2f;
 
-            if (hasJumped && !isSliding)
+            // Trigger Jump if buffered
+            if (jumpBufferCounter > 0 && !isSliding)
             {
                 direction.y = jumpForce;
                 animator.SetBool("Jump", true);
-                hasJumped = false;
+                jumpBufferCounter = 0; // Clear buffer
             }
             else
             {
@@ -111,48 +97,47 @@ public class PlayerRunner : MonoBehaviour
             direction.y += gravity * Time.deltaTime;
         }
 
-        // Slide
+        // 4. Slide & Flip
         if (hasSlid && controller.isGrounded && !isSliding)
         {
             StartCoroutine(SlideRoutine());
             hasSlid = false;
         }
 
-        // Flip
-        if (hasFlipped && controller.isGrounded && !isSliding)
+        if (hasFlipped && controller.isGrounded)
         {
             animator.SetTrigger("Flip");
             hasFlipped = false;
         }
 
-        direction.x = xDelta;
+        // 5. Apply Movement
+        direction.x = xVelocity;
         direction.z = forwardSpeed;
 
         controller.Move(direction * Time.deltaTime);
 
+        // 6. Update Animations
         animator.SetFloat("Speed", 1f);
         animator.SetBool("IsGrounded", controller.isGrounded);
     }
 
     void HandleLaneInput()
     {
-        float h = horizontal;
-
         if (canSwitchLane)
         {
-            if (h > 0.5f && currentLane < 2)
+            if (horizontal > 0.5f && currentLane < 2)
             {
                 currentLane++;
                 canSwitchLane = false;
             }
-            else if (h < -0.5f && currentLane > 0)
+            else if (horizontal < -0.5f && currentLane > 0)
             {
                 currentLane--;
                 canSwitchLane = false;
             }
         }
 
-        if (Mathf.Abs(h) < 0.1f)
+        if (Mathf.Abs(horizontal) < 0.1f)
             canSwitchLane = true;
     }
 
@@ -164,8 +149,10 @@ public class PlayerRunner : MonoBehaviour
         float originalHeight = controller.height;
         Vector3 originalCenter = controller.center;
 
-        controller.height = originalHeight * slideHeightMultiplier;
-        controller.center = originalCenter * slideHeightMultiplier;
+        // Shrink height and lower center so feet stay on the floor
+        float targetHeight = originalHeight * slideHeightMultiplier;
+        controller.height = targetHeight;
+        controller.center = new Vector3(originalCenter.x, originalCenter.y - (originalHeight - targetHeight) / 2f, originalCenter.z);
 
         yield return new WaitForSeconds(slideTime);
 

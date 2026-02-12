@@ -14,10 +14,10 @@ using UnityEngine.InputSystem;
 
 public class MobileDisableAutoSwitchControls : MonoBehaviour
 {
-    
+
 #if ENABLE_INPUT_SYSTEM && (UNITY_IOS || UNITY_ANDROID)
 
-    [Header("Target")]
+   [Header("Target")]
     public PlayerInput playerInput;
 
     void Start()
@@ -30,6 +30,11 @@ public class MobileDisableAutoSwitchControls : MonoBehaviour
         playerInput.neverAutoSwitchControlSchemes = true;
     }
 
+#else
+    // This part runs on PC/Mac/Web to hide the joysticks
+    void Start()
+    {
+        this.gameObject.SetActive(false);
+    }
 #endif
-    
 }

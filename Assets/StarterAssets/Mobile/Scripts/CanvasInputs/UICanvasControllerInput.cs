@@ -4,30 +4,32 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
+        [Header("Player Reference")]
+        public PlayerRunner player; // Moved inside the class
 
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
-            starterAssetsInputs.MoveInput(virtualMoveDirection);
+            player.MoveInput(virtualMoveDirection);
         }
 
-        public void VirtualLookInput(Vector2 virtualLookDirection)
+        // Changed from Vector2 to bool to match your PlayerRunner script
+        public void VirtualSlideInput(bool virtualSlideState)
         {
-            starterAssetsInputs.LookInput(virtualLookDirection);
+            player.SlideInput(virtualSlideState);
         }
 
         public void VirtualJumpInput(bool virtualJumpState)
         {
-            starterAssetsInputs.JumpInput(virtualJumpState);
+            player.JumpInput(virtualJumpState);
         }
 
-        public void VirtualSprintInput(bool virtualSprintState)
+        public void VirtualFlipInput(bool virtualFlipState)
         {
-            starterAssetsInputs.SprintInput(virtualSprintState);
+            player.FlipInput(virtualFlipState);
         }
-        
     }
 
 }
