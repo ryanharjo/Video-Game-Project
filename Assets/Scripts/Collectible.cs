@@ -3,7 +3,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
 
-    public int value = 1;          // How many points this item gives
+    public int value = 10;          // How many points this item gives
     public AudioClip collectSound; // Optional sound
 
     private void OnTriggerEnter(Collider other)
