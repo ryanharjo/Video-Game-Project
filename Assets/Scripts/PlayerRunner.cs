@@ -35,7 +35,7 @@ public class PlayerRunner : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     #region Input Callbacks

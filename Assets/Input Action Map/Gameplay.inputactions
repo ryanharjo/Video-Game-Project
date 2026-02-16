@@ -3,7 +3,7 @@
     "name": "Gameplay",
     "maps": [
         {
-            "name": "Gameplay",
+            "name": "Player",
             "id": "e90a739c-c42e-4d26-bde3-0203660dcf42",
             "actions": [
                 {
@@ -31,7 +31,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "FLIP",
