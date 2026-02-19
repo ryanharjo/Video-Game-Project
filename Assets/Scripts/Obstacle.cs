@@ -11,7 +11,7 @@ public class Obstacle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Game Over!");
             Time.timeScale = 0f;

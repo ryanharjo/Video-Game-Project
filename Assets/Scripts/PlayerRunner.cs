@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
-    public float forwardSpeed = 10f;
+    public float forwardSpeed = 15f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
@@ -34,6 +34,7 @@ public class PlayerRunner : MonoBehaviour
 
     void Awake()
     {
+        Time.timeScale = 1f;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
@@ -63,7 +64,7 @@ public class PlayerRunner : MonoBehaviour
     #endregion
 
     void Update()
-    {
+    {       
         // 1. Manage Timers
         if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
 
