@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
-    public float forwardSpeed = 15f;
+    public float forwardSpeed = 10f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
@@ -64,7 +64,8 @@ public class PlayerRunner : MonoBehaviour
     #endregion
 
     void Update()
-    {       
+    {
+        Debug.Log("Moving forward");
         // 1. Manage Timers
         if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
 
@@ -99,7 +100,7 @@ public class PlayerRunner : MonoBehaviour
         }
 
         // 4. Slide & Flip
-        if (hasSlid && controller.isGrounded && !isSliding)
+        if (hasSlid && controller.isGrounded && !isSliding && !animator.GetBool("Jump"))
         {
             StartCoroutine(SlideRoutine());
             hasSlid = false;
