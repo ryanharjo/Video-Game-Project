@@ -3,19 +3,22 @@ using UnityEngine;
 public class GroundSpawner : MonoBehaviour
 {
     public GameObject groundTile;
-    Vector3 nextSpawnPoint;
+    public float tileLength = 10f;   
+    public int tilesOnScreen = 15;
 
-    public void SpawnTile ()
-    {
-        GameObject temp = Instantiate(groundTile, nextSpawnPoint, Quaternion.identity);
-        nextSpawnPoint = temp.transform.GetChild(1).transform.position;
-    }
+    private Vector3 nextSpawnPoint;
 
-    private void Start ()
+    private void Start()
     {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < tilesOnScreen; i++)
         {
             SpawnTile();
         }
+    }
+
+    public void SpawnTile()
+    {
+        Instantiate(groundTile, nextSpawnPoint, Quaternion.identity);
+        nextSpawnPoint += Vector3.forward * tileLength;
     }
 }

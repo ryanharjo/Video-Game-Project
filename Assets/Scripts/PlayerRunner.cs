@@ -66,6 +66,7 @@ public class PlayerRunner : MonoBehaviour
     void Update()
     {
         Debug.Log("Moving forward");
+        Debug.Log(controller.isGrounded);
         // 1. Manage Timers
         if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
 
@@ -78,7 +79,7 @@ public class PlayerRunner : MonoBehaviour
         float xVelocity = (newX - transform.position.x) / Time.deltaTime;
 
         // 3. Vertical Movement (Jump & Gravity)
-        if (controller.isGrounded)
+        if (controller.isGrounded && direction.y < 0)
         {
             if (direction.y < 0) direction.y = -2f;
 
