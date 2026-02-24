@@ -14,10 +14,7 @@ public class Collectible : MonoBehaviour
         if (PlayerScore.instance != null)
         {
             PlayerScore.instance.AddScore(value);
-        }
-        else
-        {
-            Debug.LogError("PlayerScore instance is missing in the scene!");
+      
         }
 
         // Play sound

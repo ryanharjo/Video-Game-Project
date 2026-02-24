@@ -65,6 +65,8 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentState != GameManager.GameState.Playing)
+            return;
         Debug.Log("Moving forward");
         Debug.Log(controller.isGrounded);
         // 1. Manage Timers
