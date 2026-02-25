@@ -5,62 +5,71 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [Header("Gameplay UI")]
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI coinText;
+    public TextMeshProUGUI countdownText;
+
     [Header("Panels")]
-    public GameObject gameplayPanel;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject winPanel;
-    public GameObject countdownPanel;
-
-    [Header("Countdown Text")]
-    public TextMeshProUGUI countdownText;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    void HideAll()
+    // ----------------- COINS -----------------
+    public void UpdateCoinText(int coins)
     {
-        gameplayPanel.SetActive(false);
-        pausePanel.SetActive(false);
-        gameOverPanel.SetActive(false);
-        winPanel.SetActive(false);
-        countdownPanel.SetActive(false);
+        if (coinText != null)
+            coinText.text = "Coins: " + coins.ToString();
     }
 
-    public void ShowGameplayUI()
-    {
-        HideAll();
-        gameplayPanel.SetActive(true);
-    }
-
-    public void ShowPauseUI()
-    {
-        HideAll();
-        pausePanel.SetActive(true);
-    }
-
-    public void ShowGameOverUI()
-    {
-        HideAll();
-        gameOverPanel.SetActive(true);
-    }
-
-    public void ShowWinUI()
-    {
-        HideAll();
-        winPanel.SetActive(true);
-    }
-
+    // ----------------- COUNTDOWN -----------------
     public void ShowCountdownUI()
     {
-        HideAll();
-        countdownPanel.SetActive(true);
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(true);
     }
 
-    public void UpdateCountdownText(string text)
+    public void HideCountdownUI()
     {
-        countdownText.text = text;
+        if (countdownText != null)
+            countdownText.gameObject.SetActive(false);
+    }
+
+    public void UpdateCountdownText(string value)
+    {
+        if (countdownText != null)
+            countdownText.text = value;
+    }
+
+    // ----------------- PAUSE -----------------
+    public void ShowPauseUI()
+    {
+        if (pausePanel != null)
+            pausePanel.SetActive(true);
+    }
+
+    public void HidePauseUI()
+    {
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
+    }
+
+    // ----------------- GAME OVER -----------------
+    public void ShowGameOverUI()
+    {
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+    }
+
+    // ----------------- WIN -----------------
+    public void ShowWinUI()
+    {
+        if (winPanel != null)
+            winPanel.SetActive(true);
     }
 }

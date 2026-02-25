@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    // ---------- GAME STATES ----------
     public enum GameState
     {
         Countdown,
@@ -18,9 +17,8 @@ public class GameManager : MonoBehaviour
 
     public GameState currentState;
 
-    // ---------- SCORE ----------
-    [Header("Score & Goals")]
-    public int score = 0;
+    [Header("Coins & Goals")]
+    public int coins = 0;
     public int highScore = 0;
     public int coinsNeededToWin = 50;
 
@@ -46,7 +44,19 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Countdown);
     }
 
-    // ---------- STATE MANAGER ----------
+    void Update()
+    {
+        // ESC key toggles pause
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Playing)
+                ChangeState(GameState.Paused);
+            else if (currentState == GameState.Paused)
+                ChangeState(GameState.Playing);
+        }
+    }
+
+    // ---------- STATE HANDLER ----------
     public void ChangeState(GameState newState)
     {
         currentState = newState;
@@ -59,7 +69,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.Playing:
                 Time.timeScale = 1f;
-                UIManager.Instance.ShowGameplayUI();
+                UIManager.Instance.HideCountdownUI();
                 break;
 
             case GameState.Paused:
@@ -99,45 +109,49 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Playing);
     }
 
-    // ---------- SCORE ----------
-    public void AddScore(int amount)
+    // ---------- COINS ----------
+    public void AddCoin(int amount)
     {
         if (currentState != GameState.Playing)
             return;
 
-        score += amount;
+        coins += amount;
+        UIManager.Instance.UpdateCoinText(coins);
 
-        if (score > highScore)
+        if (coins > highScore)
         {
-            highScore = score;
+            highScore = coins;
             PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save();
         }
 
-        if (score >= coinsNeededToWin)
+        if (coins >= coinsNeededToWin)
         {
             ChangeState(GameState.LevelComplete);
         }
     }
 
-    // ---------- PUBLIC CONTROLS ----------
-    public void GameOver()
+    // ---------- BUTTON FUNCTIONS ----------
+    public void ResumeGame()
     {
-        ChangeState(GameState.GameOver);
-    }
-
-    public void TogglePause()
-    {
-        if (currentState == GameState.Playing)
-            ChangeState(GameState.Paused);
-        else if (currentState == GameState.Paused)
-            ChangeState(GameState.Playing);
+        ChangeState(GameState.Playing);
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        score = 0;
+        coins = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu"); 
+    }
+
+    public void GameOver()
+    {
+        ChangeState(GameState.GameOver);
     }
 }
