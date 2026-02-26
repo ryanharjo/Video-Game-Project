@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
         LevelComplete
     }
 
+    [Header("State")]
     public GameState currentState;
 
     [Header("Coins & Goals")]
@@ -25,18 +27,30 @@ public class GameManager : MonoBehaviour
     [Header("Countdown Settings")]
     public float countdownTime = 3f;
 
+    [Header("Input Settings")]
+    [SerializeField] private InputActionAsset inputActions;
+    private InputAction pauseAction;
+
     private void Awake()
     {
+        // Singleton Pattern
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Setup Input Action for Pausing
+            // Assumes you have an Action Map named "UI" and an Action named "Pause"
+            pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
+    private void OnEnable() => pauseAction?.Enable();
+    private void OnDisable() => pauseAction?.Disable();
 
     void Start()
     {
@@ -46,14 +60,19 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // ESC key toggles pause
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // New Input System check for Pause toggle
+        if (pauseAction != null && pauseAction.triggered)
         {
-            if (currentState == GameState.Playing)
-                ChangeState(GameState.Paused);
-            else if (currentState == GameState.Paused)
-                ChangeState(GameState.Playing);
+            TogglePause();
         }
+    }
+
+    private void TogglePause()
+    {
+        if (currentState == GameState.Playing)
+            ChangeState(GameState.Paused);
+        else if (currentState == GameState.Paused)
+            ChangeState(GameState.Playing);
     }
 
     // ---------- STATE HANDLER ----------
@@ -70,6 +89,8 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 Time.timeScale = 1f;
                 UIManager.Instance.HideCountdownUI();
+                // Ensure UI is closed if resuming
+                UIManager.Instance.HidePauseUI();
                 break;
 
             case GameState.Paused:
@@ -86,72 +107,6 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0f;
                 UIManager.Instance.ShowWinUI();
                 break;
+            }
         }
     }
-
-    // ---------- COUNTDOWN ----------
-    IEnumerator StartCountdown()
-    {
-        UIManager.Instance.ShowCountdownUI();
-
-        float timer = countdownTime;
-
-        while (timer > 0)
-        {
-            UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
-            yield return new WaitForSeconds(1f);
-            timer--;
-        }
-
-        UIManager.Instance.UpdateCountdownText("GO!");
-        yield return new WaitForSeconds(1f);
-
-        ChangeState(GameState.Playing);
-    }
-
-    // ---------- COINS ----------
-    public void AddCoin(int amount)
-    {
-        if (currentState != GameState.Playing)
-            return;
-
-        coins += amount;
-        UIManager.Instance.UpdateCoinText(coins);
-
-        if (coins > highScore)
-        {
-            highScore = coins;
-            PlayerPrefs.SetInt("HighScore", highScore);
-            PlayerPrefs.Save();
-        }
-
-        if (coins >= coinsNeededToWin)
-        {
-            ChangeState(GameState.LevelComplete);
-        }
-    }
-
-    // ---------- BUTTON FUNCTIONS ----------
-    public void ResumeGame()
-    {
-        ChangeState(GameState.Playing);
-    }
-
-    public void RestartGame()
-    {
-        Time.timeScale = 1f;
-        coins = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void LoadMainMenu()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu"); 
-    }
-
-    public void GameOver()
-    {
-        ChangeState(GameState.GameOver);
-    }
-}

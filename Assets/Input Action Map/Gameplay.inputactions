@@ -23,24 +23,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "SLIDE",
-                    "type": "Button",
-                    "id": "43c2c2a3-2b46-4c4c-9b0c-d713764000c4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "FLIP",
-                    "type": "Button",
-                    "id": "02bcad3b-85ed-4ff5-9a0c-7f1f70c442a1",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -186,59 +168,43 @@
                     "action": "MOVE",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "9b3b0095-9747-4707-8445-b630e384995b",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "a307b221-a27a-4888-9485-02636fae4c26",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "3d9acff9-e505-4289-9405-0e7fefae1602",
-                    "path": "<Keyboard>/#(S)",
+                    "id": "61ef0860-6e0e-45e8-a176-10180cf90338",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": ";New Control Scheme",
-                    "action": "SLIDE",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "123947f1-756b-4086-ba8c-c153521bb7b4",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "55a6ade9-3aa6-471b-90f3-7b8eb1efecfd",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": ";New Control Scheme",
-                    "action": "SLIDE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f560108b-c30c-441d-b342-50885c9be5ba",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "SLIDE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c8219738-ab66-4544-bde1-2a7c14a328bc",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "FLIP",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "218fa539-396f-439a-8a3e-ddab323df48a",
-                    "path": "<Keyboard>/#(F)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "FLIP",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

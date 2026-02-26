@@ -16,20 +16,14 @@ namespace StarterAssets
         }
 
         // Changed from Vector2 to bool to match your PlayerRunner script
-        public void VirtualSlideInput(bool virtualSlideState)
-        {
-            player.SlideInput(virtualSlideState);
-        }
+     
 
         public void VirtualJumpInput(bool virtualJumpState)
         {
             player.JumpInput(virtualJumpState);
         }
 
-        public void VirtualFlipInput(bool virtualFlipState)
-        {
-            player.FlipInput(virtualFlipState);
-        }
+      
     }
 
 }
