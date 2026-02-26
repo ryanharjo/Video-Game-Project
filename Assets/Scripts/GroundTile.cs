@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GroundTile : MonoBehaviour
 {
-    GroundSpawner groundSpawner;
+    public GroundSpawner groundSpawner;
 
     public GameObject obstaclePrefab;
     public GameObject coinPrefab;
@@ -49,7 +49,7 @@ public class GroundTile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            groundSpawner.SpawnTile();
+            groundSpawner.SpawnTile(Random.Range(0, groundSpawner.tilePrefabs.Length));
             Destroy(gameObject, 2f);
         }
     }

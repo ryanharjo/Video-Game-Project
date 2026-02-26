@@ -6,31 +6,24 @@ public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
     public float forwardSpeed = 10f;
+    public float maxSpeed = 30f;
+    public float speedIncreaseRate = 0.1f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
     [Header("Jump & Physics")]
-    public float jumpForce = 7.5f;
+    public float jumpForce = 8f;
     public float gravity = -25f;
-    public float jumpBufferTime = 0.2f; // Memory for jump input
-
-    [Header("Slide")]
-    public float slideTime = 0.8f;
-    public float slideHeightMultiplier = 0.5f;
+    public float jumpBufferTime = 0.2f;
 
     private CharacterController controller;
     private Animator animator;
 
-    private Vector3 direction;
+    private Vector3 velocity; // Vertical and forward velocity
     private int currentLane = 1; // 0: Left, 1: Middle, 2: Right
     private bool canSwitchLane = true;
-    private bool isSliding = false;
-
-    // Input States & Buffers
     private float horizontal;
     private float jumpBufferCounter;
-    private bool hasSlid;
-    private bool hasFlipped;
 
     void Awake()
     {
@@ -40,94 +33,89 @@ public class PlayerRunner : MonoBehaviour
     }
 
     #region Input Callbacks
-    public void Move(InputAction.CallbackContext context) => MoveInput(context.ReadValue<Vector2>());
-    public void Jump(InputAction.CallbackContext context) => JumpInput(context.ReadValueAsButton());
-    public void Slide(InputAction.CallbackContext context) => SlideInput(context.ReadValueAsButton());
-    public void Flip(InputAction.CallbackContext context) => FlipInput(context.ReadValueAsButton());
-
-    public void MoveInput(Vector2 newMoveDirection) => horizontal = newMoveDirection.x;
-
-    public void JumpInput(bool pressed)
+    public void JumpInput(bool virtualJumpState)
     {
-        if (pressed) jumpBufferCounter = jumpBufferTime;
+        if (virtualJumpState)
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
     }
 
-    public void SlideInput(bool pressed)
+    // Add this for the Mobile UI Joysticks/D-pad to call
+    public void MoveInput(Vector2 virtualMoveDirection)
     {
-        if (pressed) hasSlid = true;
+        horizontal = virtualMoveDirection.x;
     }
 
-    public void FlipInput(bool pressed)
+    // Keep your existing Input System callbacks for Keyboard/Controller
+    public void Move(InputAction.CallbackContext context)
     {
-        if (pressed) hasFlipped = true;
+        horizontal = context.ReadValue<Vector2>().x;
     }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        if (context.started) jumpBufferCounter = jumpBufferTime;
+    }
+
     #endregion
 
     void Update()
     {
-        if (GameManager.Instance.currentState != GameManager.GameState.Playing) return;
+        if (GameManager.Instance != null && GameManager.Instance.currentState != GameManager.GameState.Playing)
+            return;
 
-        Debug.Log("Moving forward");
-        Debug.Log(controller.isGrounded);
-        // 1. Manage Timers
+        // 1. Gradually increase speed over time
+        if (forwardSpeed < maxSpeed)
+            forwardSpeed += speedIncreaseRate * Time.deltaTime;
+
+        // 2. Timers
         if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
 
-        // 2. Horizontal Movement (Lanes)
+        // 3. Lane Logic
         HandleLaneInput();
+
+        // Calculate Target X based on lane
         float targetX = (currentLane - 1) * laneDistance;
+        Vector3 nextPosition = transform.position;
 
-        // Calculate the speed needed to reach the target X this frame
-        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
-        float xVelocity = (newX - transform.position.x) / Time.deltaTime;
+        // Smoothly move the X coordinate toward the target lane
+        nextPosition.x = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
 
-        // 3. Vertical Movement (Jump & Gravity)
-        if (controller.isGrounded && direction.y < 0)
+        // 4. Vertical Logic (Gravity & Jump)
+        if (controller.isGrounded)
         {
-            if (direction.y < 0) direction.y = -2f;
+            velocity.y = -1f; // Small downward force to stay grounded
 
-            // Trigger Jump if buffered
-            if (jumpBufferCounter > 0 && !isSliding)
+            if (jumpBufferCounter > 0)
             {
-                direction.y = jumpForce;
-                animator.SetBool("Jump", true);
-                jumpBufferCounter = 0; // Clear buffer
-            }
-            else
-            {
-                animator.SetBool("Jump", false);
+                velocity.y = jumpForce;
+                jumpBufferCounter = 0;
+                animator.SetTrigger("Jump"); // Use Trigger for more reliable animation
             }
         }
         else
         {
-            direction.y += gravity * Time.deltaTime;
-        }
-
-        // 4. Slide & Flip
-        if (hasSlid && controller.isGrounded && !isSliding && !animator.GetBool("Jump"))
-        {
-            StartCoroutine(SlideRoutine());
-            hasSlid = false;
-        }
-
-        if (hasFlipped && controller.isGrounded)
-        {
-            animator.SetTrigger("Flip");
-            hasFlipped = false;
+            velocity.y += gravity * Time.deltaTime;
         }
 
         // 5. Apply Movement
-        direction.x = xVelocity;
-        direction.z = forwardSpeed;
+        // Calculate the difference needed to reach the next X position
+        float xMovement = nextPosition.x - transform.position.x;
 
-        controller.Move(direction * Time.deltaTime);
+        // Combine all movements: (X: Lane change, Y: Jump/Gravity, Z: Constant Forward)
+        Vector3 moveDelta = new Vector3(xMovement, velocity.y * Time.deltaTime, forwardSpeed * Time.deltaTime);
 
-        // 6. Update Animations
-        animator.SetFloat("Speed", 1f);
+        controller.Move(moveDelta);
+
+        // 6. Animator Updates
+        animator.SetFloat("Speed", forwardSpeed / 10f); // Scales animation speed with player speed
         animator.SetBool("IsGrounded", controller.isGrounded);
     }
 
     void HandleLaneInput()
     {
+        // Check for "Press"
         if (canSwitchLane)
         {
             if (horizontal > 0.5f && currentLane < 2)
@@ -142,29 +130,21 @@ public class PlayerRunner : MonoBehaviour
             }
         }
 
+        // Check for "Release" - this allows the player to switch again
         if (Mathf.Abs(horizontal) < 0.1f)
+        {
             canSwitchLane = true;
+        }
     }
 
-    IEnumerator SlideRoutine()
+    // Detection for hitting obstacles
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        isSliding = true;
-        animator.SetBool("Slide", true);
-
-        float originalHeight = controller.height;
-        Vector3 originalCenter = controller.center;
-
-        // Shrink height and lower center so feet stay on the floor
-        float targetHeight = originalHeight * slideHeightMultiplier;
-        controller.height = targetHeight;
-        controller.center = new Vector3(originalCenter.x, originalCenter.y - (originalHeight - targetHeight) / 2f, originalCenter.z);
-
-        yield return new WaitForSeconds(slideTime);
-
-        controller.height = originalHeight;
-        controller.center = originalCenter;
-
-        animator.SetBool("Slide", false);
-        isSliding = false;
+        // Assuming obstacles have a "Obstacle" tag
+        if (hit.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Game Over!");
+            // GameManager.Instance.GameOver(); 
+        }
     }
 }

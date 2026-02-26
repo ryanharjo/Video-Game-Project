@@ -1,6 +1,7 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,8 +47,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // ESC key toggles pause
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // FIXED: Using New Input System for the ESC key
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (currentState == GameState.Playing)
                 ChangeState(GameState.Paused);
@@ -60,6 +61,9 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         currentState = newState;
+
+        // Safety check: ensure UIManager exists before calling it
+        if (UIManager.Instance == null) return;
 
         switch (currentState)
         {
@@ -92,18 +96,20 @@ public class GameManager : MonoBehaviour
     // ---------- COUNTDOWN ----------
     IEnumerator StartCountdown()
     {
-        UIManager.Instance.ShowCountdownUI();
+        if (UIManager.Instance != null) UIManager.Instance.ShowCountdownUI();
 
         float timer = countdownTime;
 
         while (timer > 0)
         {
-            UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
+            if (UIManager.Instance != null)
+                UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
+
             yield return new WaitForSeconds(1f);
             timer--;
         }
 
-        UIManager.Instance.UpdateCountdownText("GO!");
+        if (UIManager.Instance != null) UIManager.Instance.UpdateCountdownText("GO!");
         yield return new WaitForSeconds(1f);
 
         ChangeState(GameState.Playing);
@@ -116,7 +122,7 @@ public class GameManager : MonoBehaviour
             return;
 
         coins += amount;
-        UIManager.Instance.UpdateCoinText(coins);
+        if (UIManager.Instance != null) UIManager.Instance.UpdateCoinText(coins);
 
         if (coins > highScore)
         {
@@ -141,13 +147,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         coins = 0;
+        // Corrected: Uses the SceneManagement namespace
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu"); 
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void GameOver()

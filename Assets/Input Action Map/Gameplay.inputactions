@@ -23,24 +23,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "SLIDE",
-                    "type": "Button",
-                    "id": "43c2c2a3-2b46-4c4c-9b0c-d713764000c4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "FLIP",
-                    "type": "Button",
-                    "id": "02bcad3b-85ed-4ff5-9a0c-7f1f70c442a1",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -184,61 +166,6 @@
                     "processors": "",
                     "groups": ";New Control Scheme",
                     "action": "MOVE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3d9acff9-e505-4289-9405-0e7fefae1602",
-                    "path": "<Keyboard>/#(S)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "SLIDE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "123947f1-756b-4086-ba8c-c153521bb7b4",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "SLIDE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f560108b-c30c-441d-b342-50885c9be5ba",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "SLIDE",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c8219738-ab66-4544-bde1-2a7c14a328bc",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "FLIP",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "218fa539-396f-439a-8a3e-ddab323df48a",
-                    "path": "<Keyboard>/#(F)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";New Control Scheme",
-                    "action": "FLIP",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
