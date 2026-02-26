@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,8 +60,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // New Input System check for Pause toggle
-        if (pauseAction != null && pauseAction.triggered)
+        // FIXED: Using New Input System for the ESC key
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
         }
@@ -79,6 +79,9 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         currentState = newState;
+
+        // Safety check: ensure UIManager exists before calling it
+        if (UIManager.Instance == null) return;
 
         switch (currentState)
         {
@@ -110,3 +113,73 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    // ---------- COUNTDOWN ----------
+    IEnumerator StartCountdown()
+    {
+        if (UIManager.Instance != null) UIManager.Instance.ShowCountdownUI();
+
+        float timer = countdownTime;
+
+        while (timer > 0)
+        {
+            if (UIManager.Instance != null)
+                UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
+
+            yield return new WaitForSeconds(1f);
+            timer--;
+        }
+
+        if (UIManager.Instance != null) UIManager.Instance.UpdateCountdownText("GO!");
+        yield return new WaitForSeconds(1f);
+
+        ChangeState(GameState.Playing);
+    }
+
+    // ---------- COINS ----------
+    public void AddCoin(int amount)
+    {
+        if (currentState != GameState.Playing)
+            return;
+
+        coins += amount;
+        if (UIManager.Instance != null) UIManager.Instance.UpdateCoinText(coins);
+
+        if (coins > highScore)
+        {
+            highScore = coins;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
+        if (coins >= coinsNeededToWin)
+        {
+            ChangeState(GameState.LevelComplete);
+        }
+    }
+
+    // ---------- BUTTON FUNCTIONS ----------
+    public void ResumeGame()
+    {
+        ChangeState(GameState.Playing);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        coins = 0;
+        // Corrected: Uses the SceneManagement namespace
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void GameOver()
+    {
+        ChangeState(GameState.GameOver);
+    }
+}

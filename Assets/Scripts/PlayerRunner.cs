@@ -6,18 +6,20 @@ public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
     public float forwardSpeed = 10f;
+    public float maxSpeed = 30f;
+    public float speedIncreaseRate = 0.1f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
     [Header("Jump & Physics")]
-    public float jumpForce = 7.5f;
+    public float jumpForce = 8f;
     public float gravity = -25f;
     public float jumpBufferTime = 0.2f;
 
     private CharacterController controller;
     private Animator animator;
 
-    private Vector3 direction;
+    private Vector3 velocity; // Vertical and forward velocity
     private int currentLane = 1; // 0: Left, 1: Middle, 2: Right
     private bool canSwitchLane = true;
 
@@ -40,24 +42,30 @@ public class PlayerRunner : MonoBehaviour
 
     public void JumpInput(bool pressed)
     {
-        if (pressed) jumpBufferCounter = jumpBufferTime;
+        if (virtualJumpState)
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
     }
     #endregion
 
     void Update()
     {
-        if (GameManager.Instance.currentState != GameManager.GameState.Playing) return;
+        if (GameManager.Instance != null && GameManager.Instance.currentState != GameManager.GameState.Playing)
+            return;
 
         // 1. Manage Timers
         if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
 
-        // 2. Horizontal Movement (Lanes)
+        // 3. Lane Logic
         HandleLaneInput();
-        float targetX = (currentLane - 1) * laneDistance;
 
-        // Calculate the speed needed to reach the target X this frame
-        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
-        float xVelocity = (newX - transform.position.x) / Time.deltaTime;
+        // Calculate Target X based on lane
+        float targetX = (currentLane - 1) * laneDistance;
+        Vector3 nextPosition = transform.position;
+
+        // Smoothly move the X coordinate toward the target lane
+        nextPosition.x = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
 
         // 3. Vertical Movement (Jump & Gravity)
         if (controller.isGrounded)
@@ -68,13 +76,9 @@ public class PlayerRunner : MonoBehaviour
             // Trigger Jump if buffered
             if (jumpBufferCounter > 0)
             {
-                direction.y = jumpForce;
-                animator.SetBool("Jump", true);
-                jumpBufferCounter = 0; // Clear buffer
-            }
-            else
-            {
-                animator.SetBool("Jump", false);
+                velocity.y = jumpForce;
+                jumpBufferCounter = 0;
+                animator.SetTrigger("Jump"); // Use Trigger for more reliable animation
             }
         }
         else
@@ -86,7 +90,8 @@ public class PlayerRunner : MonoBehaviour
         direction.x = xVelocity;
         direction.z = forwardSpeed;
 
-        controller.Move(direction * Time.deltaTime);
+        // Combine all movements: (X: Lane change, Y: Jump/Gravity, Z: Constant Forward)
+        Vector3 moveDelta = new Vector3(xMovement, velocity.y * Time.deltaTime, forwardSpeed * Time.deltaTime);
 
         // 5. Update Animations
         animator.SetFloat("Speed", 1f);
@@ -95,6 +100,7 @@ public class PlayerRunner : MonoBehaviour
 
     void HandleLaneInput()
     {
+        // Check for "Press"
         if (canSwitchLane)
         {
             if (horizontal > 0.5f && currentLane < 2)
@@ -109,7 +115,10 @@ public class PlayerRunner : MonoBehaviour
             }
         }
 
+        // Check for "Release" - this allows the player to switch again
         if (Mathf.Abs(horizontal) < 0.1f)
+        {
             canSwitchLane = true;
+        }
     }
 }

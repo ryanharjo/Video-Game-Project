@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 3110983865733008018}
   m_Layer: 0
   m_Name: ObstacleSpawnLeft
-  m_TagString: Untagged
+  m_TagString: CoinSpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 1994287739694069347}
   m_Layer: 0
   m_Name: ObstacleSpawnRight
-  m_TagString: Untagged
+  m_TagString: CoinSpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 4089108459428457631}
   m_Layer: 0
   m_Name: ObstacleSpawnMiddle
-  m_TagString: Untagged
+  m_TagString: CoinSpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
