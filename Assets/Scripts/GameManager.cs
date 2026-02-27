@@ -1,7 +1,7 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,8 +40,10 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
             // Setup Input Action for Pausing
-            // Assumes you have an Action Map named "UI" and an Action named "Pause"
-            pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
+            if (inputActions != null)
+            {
+                pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
+            }
         }
         else
         {
@@ -60,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // FIXED: Using New Input System for the ESC key
+        // Using New Input System for the ESC key
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
@@ -92,7 +94,6 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 Time.timeScale = 1f;
                 UIManager.Instance.HideCountdownUI();
-                // Ensure UI is closed if resuming
                 UIManager.Instance.HidePauseUI();
                 break;
 
@@ -110,7 +111,6 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0f;
                 UIManager.Instance.ShowWinUI();
                 break;
-            }
         }
     }
 
@@ -168,14 +168,13 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         coins = 0;
-        // Corrected: Uses the SceneManagement namespace
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void GameOver()

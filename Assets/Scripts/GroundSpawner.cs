@@ -5,8 +5,8 @@ public class GroundSpawner : MonoBehaviour
 {
     [Header("Tile Settings")]
     public GameObject[] tilePrefabs; // Array of different obstacle tiles
-    public float tileLength = 30f;   // Length of one tile
-    public int tilesOnScreen = 6;    // Number of tiles visible at once
+    public float tileLength = 10f;   // Length of one tile
+    public int tilesOnScreen = 15;    // Number of tiles visible at once
 
     [Header("References")]
     public Transform playerTransform; // Drag the Player object here

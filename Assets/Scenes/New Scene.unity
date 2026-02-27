@@ -463,7 +463,7 @@ Transform:
   m_GameObject: {fileID: 420970886}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.79, y: 1.782, z: -1.454}
+  m_LocalPosition: {x: 0.611, y: 1.782, z: -1.454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1385,9 +1385,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2404fc7eeb8007041afb148b878cbf65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundSpawner
-  groundTile: {fileID: 51448068224366950, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
-  tileLength: 30
-  tilesOnScreen: 6
+  tilePrefabs:
+  - {fileID: 51448068224366950, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
+  tileLength: 5
+  tilesOnScreen: 15
+  playerTransform: {fileID: 1413780192}
 --- !u!4 &1279882969
 Transform:
   m_ObjectHideFlags: 0
@@ -1496,6 +1498,7 @@ MonoBehaviour:
   highScore: 0
   coinsNeededToWin: 150
   countdownTime: 3
+  inputActions: {fileID: -944628639613478452, guid: 01d451799abff394699d6b809940a5c8, type: 3}
 --- !u!4 &1385698699
 Transform:
   m_ObjectHideFlags: 0
@@ -1616,6 +1619,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1158a44f-7acf-42ff-9a53-bcd8d9e96384
     m_ActionName: 'Player/MOVE[/Keyboard/w,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 838995142}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowPauseUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6735095d-77fc-4b0e-9930-67c9385a61a2
+    m_ActionName: 'UI/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
