@@ -6,92 +6,96 @@ public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
     public float forwardSpeed = 10f;
+    public float speedIncreaseRate = 0.1f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
     [Header("Jump & Physics")]
-    public float jumpForce = 8f;
-    public float gravity = -25f;
+    public float jumpForce = 12f;
+    public float gravity = -30f;
     public float jumpBufferTime = 0.2f;
 
     private CharacterController controller;
     private Animator animator;
 
     private Vector3 velocity;
-    private int currentLane = 1; // 0 = Left, 1 = Middle, 2 = Right
-    private bool canSwitchLane = true;
+    private int currentLane = 1;
+    private bool inputReset = true;
 
     private float horizontal;
     private float jumpBufferCounter;
 
     void Awake()
     {
-        Time.timeScale = 1f;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
 
-    #region INPUT SYSTEM CALLBACKS
-
-    public void Move(InputAction.CallbackContext context)
+    #region Input
+    public void MoveInput(Vector2 newMoveDirection)
     {
-        Vector2 input = context.ReadValue<Vector2>();
-        horizontal = input.x;
+        horizontal = newMoveDirection.x;
     }
 
-    public void Jump(InputAction.CallbackContext context)
+    // 2. Ensure this is PUBLIC and accepts a BOOL
+    public void JumpInput(bool pressed)
     {
-        if (context.started)
+        if (pressed)
         {
             jumpBufferCounter = jumpBufferTime;
         }
     }
-
-    #endregion
-
-    #region OPTIONAL MOBILE SUPPORT
-
-    public void MoveInput(Vector2 input)
-    {
-        horizontal = input.x;
-    }
-
-    public void JumpInput(bool jumpPressed)
-    {
-        if (jumpPressed)
-        {
-            jumpBufferCounter = jumpBufferTime;
-        }
-    }
-
     #endregion
 
     void Update()
     {
-        // Stop if game not playing
-        if (GameManager.Instance != null &&
-            GameManager.Instance.currentState != GameManager.GameState.Playing)
+        if (GameManager.Instance != null && GameManager.Instance.currentState != GameManager.GameState.Playing)
             return;
 
-        // Jump buffer countdown
-        if (jumpBufferCounter > 0)
-            jumpBufferCounter -= Time.deltaTime;
+        // 1. Timers & Speed
+        if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
+        forwardSpeed += speedIncreaseRate * Time.deltaTime;
 
-        HandleLaneInput();
+        // 2. Lane Logic
+        HandleLanes();
 
-        // Calculate lane position
+        // 3. Physics & Movement
+        ApplyMovement();
+
+        // 4. Animations
+        UpdateAnimations();
+    }
+
+    private void HandleLanes()
+    {
+        if (inputReset)
+        {
+            if (horizontal > 0.5f && currentLane < 2)
+            {
+                currentLane++;
+                inputReset = false;
+            }
+            else if (horizontal < -0.5f && currentLane > 0)
+            {
+                currentLane--;
+                inputReset = false;
+            }
+        }
+
+        if (Mathf.Abs(horizontal) < 0.15f) inputReset = true;
+    }
+
+    private void ApplyMovement()
+    {
+        
         float targetX = (currentLane - 1) * laneDistance;
-        float newX = Mathf.MoveTowards(
-            transform.position.x,
-            targetX,
-            laneSwitchSpeed * Time.deltaTime
-        );
+        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
+        float xDelta = newX - transform.position.x;
 
-        // Ground check
+        
         if (controller.isGrounded)
         {
-            if (velocity.y < 0)
-                velocity.y = -2f;
+            if (velocity.y < 0) velocity.y = -1f;
 
             if (jumpBufferCounter > 0)
             {
@@ -105,39 +109,14 @@ public class PlayerRunner : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
         }
 
-        // Movement vector
-        Vector3 move = new Vector3(
-            newX - transform.position.x,
-            velocity.y,
-            forwardSpeed
-        );
-
-        controller.Move(move * Time.deltaTime);
-
-        // Animator updates
-        animator.SetFloat("Speed", 1f);
-        animator.SetBool("IsGrounded", controller.isGrounded);
+        
+        Vector3 move = new Vector3(xDelta, velocity.y * Time.deltaTime, forwardSpeed * Time.deltaTime);
+        controller.Move(move);
     }
 
-    void HandleLaneInput()
+    private void UpdateAnimations()
     {
-        if (canSwitchLane)
-        {
-            if (horizontal > 0.5f && currentLane < 2)
-            {
-                currentLane++;
-                canSwitchLane = false;
-            }
-            else if (horizontal < -0.5f && currentLane > 0)
-            {
-                currentLane--;
-                canSwitchLane = false;
-            }
-        }
-
-        if (Mathf.Abs(horizontal) < 0.1f)
-        {
-            canSwitchLane = true;
-        }
+        animator.SetFloat("Speed", forwardSpeed);
+        animator.SetBool("IsGrounded", controller.isGrounded);
     }
 }

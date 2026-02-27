@@ -33,13 +33,13 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton Pattern
+        
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Setup Input Action for Pausing
+            
             if (inputActions != null)
             {
                 pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
@@ -56,13 +56,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        highScore = PlayerPrefs.GetInt("High Score", 0);
         ChangeState(GameState.Countdown);
     }
 
     void Update()
     {
-        // Using New Input System for the ESC key
+        
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
 
-        // Safety check: ensure UIManager exists before calling it
+        
         if (UIManager.Instance == null) return;
 
         switch (currentState)
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
         if (coins > highScore)
         {
             highScore = coins;
-            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.SetInt("High Score", highScore);
             PlayerPrefs.Save();
         }
 

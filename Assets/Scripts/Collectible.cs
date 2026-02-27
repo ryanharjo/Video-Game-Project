@@ -1,29 +1,21 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Collectible : MonoBehaviour
 {
+    public float rotationSpeed = 100f;
 
-    public int value = 10;          // How many points this item gives
-    public AudioClip collectSound; // Optional sound
+    void Update()
+    {
+        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-
-        // Safety check
-        if (PlayerScore.instance != null)
+        
+        if (other.CompareTag("Player"))
         {
-            PlayerScore.instance.AddScore(value);
-      
+            Destroy(gameObject);
         }
-
-        // Play sound
-        if (collectSound != null)
-        {
-            AudioSource.PlayClipAtPoint(collectSound, transform.position);
-        }
-
-        // Destroy collectible
-        Destroy(gameObject);
     }
 }

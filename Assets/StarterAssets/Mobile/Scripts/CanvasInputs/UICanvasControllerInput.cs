@@ -5,25 +5,25 @@ namespace StarterAssets
     public class UICanvasControllerInput : MonoBehaviour
     {
         [Header("Player Reference")]
-        public PlayerRunner player; // Moved inside the class
+        public PlayerRunner player;
 
-        [Header("Output")]
-        public StarterAssetsInputs starterAssetsInputs;
-
+        // 1. Logic for On-Screen Joysticks or D-Pads
         public void VirtualMoveInput(Vector2 virtualMoveDirection)
         {
-            player.MoveInput(virtualMoveDirection);
+            if (player != null)
+            {
+                player.MoveInput(virtualMoveDirection);
+            }
         }
 
-        // Changed from Vector2 to bool to match your PlayerRunner script
-     
-
+        // 2. Logic for On-Screen Jump Button
         public void VirtualJumpInput(bool virtualJumpState)
         {
-            player.JumpInput(virtualJumpState);
+            if (player != null)
+            {
+                // We only trigger the jump when the button is first pressed (true)
+                player.JumpInput(virtualJumpState);
+            }
         }
-
-      
     }
-
 }
