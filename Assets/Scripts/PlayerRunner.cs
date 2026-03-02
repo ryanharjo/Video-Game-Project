@@ -6,102 +6,89 @@ public class PlayerRunner : MonoBehaviour
 {
     [Header("Movement")]
     public float forwardSpeed = 10f;
-    public float speedIncreaseRate = 0.1f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
 
-    [Header("Jump & Physics")]
-    public float jumpForce = 12f;
-    public float gravity = -30f;
-    public float jumpBufferTime = 0.2f;
+    [Header("Jump Settings")]
+    public float jumpForce = 6f;
+    public float gravity = -20f;
 
     private CharacterController controller;
     private Animator animator;
 
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction jumpAction;
+
+    private Vector2 mobileMoveInput;
+    private bool mobileJumpInput;
+
     private Vector3 velocity;
     private int currentLane = 1;
-    private bool inputReset = true;
+    private bool canSwitchLane = true;
 
-    private float horizontal;
-    private float jumpBufferCounter;
+    private bool wasGrounded;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
+
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
+
+        Debug.Log("PlayerRunner initialized.");
     }
 
-    #region Input
-    public void MoveInput(Vector2 newMoveDirection)
+    void OnEnable()
     {
-        horizontal = newMoveDirection.x;
+        moveAction.Enable();
+        jumpAction.Enable();
     }
 
-    // 2. Ensure this is PUBLIC and accepts a BOOL
-    public void JumpInput(bool pressed)
+    void OnDisable()
     {
-        if (pressed)
-        {
-            jumpBufferCounter = jumpBufferTime;
-        }
+        moveAction.Disable();
+        jumpAction.Disable();
     }
-    #endregion
 
     void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.currentState != GameManager.GameState.Playing)
-            return;
-
-        // 1. Timers & Speed
-        if (jumpBufferCounter > 0) jumpBufferCounter -= Time.deltaTime;
-        forwardSpeed += speedIncreaseRate * Time.deltaTime;
-
-        // 2. Lane Logic
-        HandleLanes();
-
-        // 3. Physics & Movement
-        ApplyMovement();
-
-        // 4. Animations
-        UpdateAnimations();
+        HandleInput();
+        HandleMovement();
+        UpdateAnimator();
+        DebugGroundState();
     }
 
-    private void HandleLanes()
+    void HandleMovement()
     {
-        if (inputReset)
-        {
-            if (horizontal > 0.5f && currentLane < 2)
-            {
-                currentLane++;
-                inputReset = false;
-            }
-            else if (horizontal < -0.5f && currentLane > 0)
-            {
-                currentLane--;
-                inputReset = false;
-            }
-        }
-
-        if (Mathf.Abs(horizontal) < 0.15f) inputReset = true;
-    }
-
-    private void ApplyMovement()
-    {
-        
         float targetX = (currentLane - 1) * laneDistance;
-        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
-        float xDelta = newX - transform.position.x;
 
-        
+        Vector3 currentPosition = transform.position;
+        float newX = Mathf.MoveTowards(
+            currentPosition.x,
+            targetX,
+            laneSwitchSpeed * Time.deltaTime
+        );
+
+        float xDelta = newX - currentPosition.x;
+
         if (controller.isGrounded)
         {
-            if (velocity.y < 0) velocity.y = -1f;
+            if (velocity.y < 0)
+                velocity.y = -2f;
 
-            if (jumpBufferCounter > 0)
+            bool jumpPressed = jumpAction.triggered || mobileJumpInput;
+            if (jumpPressed)
             {
+                Debug.Log("JUMP TRIGGERED");
                 velocity.y = jumpForce;
-                jumpBufferCounter = 0;
-                animator.SetTrigger("Jump");
+
+                if (animator != null)
+                    animator.SetTrigger("Jump");
+
+                mobileJumpInput = false; // reset mobile tap
             }
         }
         else
@@ -109,14 +96,77 @@ public class PlayerRunner : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
         }
 
-        
-        Vector3 move = new Vector3(xDelta, velocity.y * Time.deltaTime, forwardSpeed * Time.deltaTime);
-        controller.Move(move);
+        Vector3 moveVector = new Vector3(
+            xDelta,
+            velocity.y,
+            forwardSpeed * Time.deltaTime
+        );
+
+        controller.Move(moveVector);
     }
 
-    private void UpdateAnimations()
+    void HandleInput()
     {
-        animator.SetFloat("Speed", forwardSpeed);
+        // Read Input System value (keyboard/controller)
+        float inputSystemX = moveAction.ReadValue<Vector2>().x;
+
+        // Combine with mobile joystick input
+        float horizontalInput = inputSystemX;
+
+        if (Mathf.Abs(mobileMoveInput.x) > Mathf.Abs(horizontalInput))
+            horizontalInput = mobileMoveInput.x;
+
+        if (canSwitchLane)
+        {
+            if (horizontalInput > 0.5f && currentLane < 2)
+            {
+                currentLane++;
+                canSwitchLane = false;
+                Debug.Log("Switched to lane: " + currentLane);
+            }
+            else if (horizontalInput < -0.5f && currentLane > 0)
+            {
+                currentLane--;
+                canSwitchLane = false;
+                Debug.Log("Switched to lane: " + currentLane);
+            }
+        }
+
+        if (Mathf.Abs(horizontalInput) < 0.1f)
+            canSwitchLane = true;
+    }
+
+    void UpdateAnimator()
+    {
+        if (animator == null) return;
+
+        animator.SetBool("IsRunning", true);
         animator.SetBool("IsGrounded", controller.isGrounded);
+        animator.SetFloat("VerticalVelocity", velocity.y);
+    }
+
+    void DebugGroundState()
+    {
+        Debug.Log("Grounded: " + controller.isGrounded);
+        if (controller.isGrounded && !wasGrounded)
+        {
+            Debug.Log("LANDED");
+        }
+        else if (!controller.isGrounded && wasGrounded)
+        {
+            Debug.Log("LEFT GROUND");
+        }
+
+        wasGrounded = controller.isGrounded;
+    }
+  
+    public void MoveInput(Vector2 value)
+    {
+        mobileMoveInput = value;
+    }
+
+    public void JumpInput(bool value)
+    {
+        mobileJumpInput = value;
     }
 }
