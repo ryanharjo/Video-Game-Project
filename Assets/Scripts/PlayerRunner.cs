@@ -10,8 +10,9 @@ public class PlayerRunner : MonoBehaviour
     public float laneSwitchSpeed = 15f;
 
     [Header("Jump Settings")]
-    public float jumpForce = 6f;
-    public float gravity = -20f;
+    public float jumpForce = 5.5f;   // Lower jump
+    public float gravity = -32f;     // Stronger gravity
+    public float fallMultiplier = 1.5f; // Faster falling
 
     private CharacterController controller;
     private Animator animator;
@@ -27,8 +28,6 @@ public class PlayerRunner : MonoBehaviour
     private int currentLane = 1;
     private bool canSwitchLane = true;
 
-    private bool wasGrounded;
-
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -37,8 +36,6 @@ public class PlayerRunner : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
-
-        Debug.Log("PlayerRunner initialized.");
     }
 
     void OnEnable()
@@ -58,11 +55,11 @@ public class PlayerRunner : MonoBehaviour
         HandleInput();
         HandleMovement();
         UpdateAnimator();
-        DebugGroundState();
     }
 
     void HandleMovement()
     {
+        // Lane movement
         float targetX = (currentLane - 1) * laneDistance;
 
         Vector3 currentPosition = transform.position;
@@ -74,26 +71,32 @@ public class PlayerRunner : MonoBehaviour
 
         float xDelta = newX - currentPosition.x;
 
+        // ALWAYS apply gravity
+        velocity.y += gravity * Time.deltaTime;
+
+        // Faster falling (better runner feel)
+        if (velocity.y < 0)
+        {
+            velocity.y += gravity * (fallMultiplier - 1) * Time.deltaTime;
+        }
+
+        // Jump
+        bool jumpPressed = jumpAction.triggered || mobileJumpInput;
+
         if (controller.isGrounded)
         {
             if (velocity.y < 0)
-                velocity.y = -2f;
+                velocity.y = -2f; // Stick to ground
 
-            bool jumpPressed = jumpAction.triggered || mobileJumpInput;
             if (jumpPressed)
             {
-                Debug.Log("JUMP TRIGGERED");
                 velocity.y = jumpForce;
 
                 if (animator != null)
                     animator.SetTrigger("Jump");
 
-                mobileJumpInput = false; // reset mobile tap
+                mobileJumpInput = false;
             }
-        }
-        else
-        {
-            velocity.y += gravity * Time.deltaTime;
         }
 
         Vector3 moveVector = new Vector3(
@@ -107,10 +110,8 @@ public class PlayerRunner : MonoBehaviour
 
     void HandleInput()
     {
-        // Read Input System value (keyboard/controller)
         float inputSystemX = moveAction.ReadValue<Vector2>().x;
 
-        // Combine with mobile joystick input
         float horizontalInput = inputSystemX;
 
         if (Mathf.Abs(mobileMoveInput.x) > Mathf.Abs(horizontalInput))
@@ -122,13 +123,11 @@ public class PlayerRunner : MonoBehaviour
             {
                 currentLane++;
                 canSwitchLane = false;
-                Debug.Log("Switched to lane: " + currentLane);
             }
             else if (horizontalInput < -0.5f && currentLane > 0)
             {
                 currentLane--;
                 canSwitchLane = false;
-                Debug.Log("Switched to lane: " + currentLane);
             }
         }
 
@@ -145,21 +144,6 @@ public class PlayerRunner : MonoBehaviour
         animator.SetFloat("VerticalVelocity", velocity.y);
     }
 
-    void DebugGroundState()
-    {
-        Debug.Log("Grounded: " + controller.isGrounded);
-        if (controller.isGrounded && !wasGrounded)
-        {
-            Debug.Log("LANDED");
-        }
-        else if (!controller.isGrounded && wasGrounded)
-        {
-            Debug.Log("LEFT GROUND");
-        }
-
-        wasGrounded = controller.isGrounded;
-    }
-  
     public void MoveInput(Vector2 value)
     {
         mobileMoveInput = value;
