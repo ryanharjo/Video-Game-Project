@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     private void Start()
     {
         playerRunner = GameObject.FindFirstObjectByType<PlayerRunner>();
-        Invoke(nameof(EnableKill), 0.5f); // half-second safety
+        Invoke(nameof(EnableKill), 0.5f); 
     }
 
     void EnableKill()
