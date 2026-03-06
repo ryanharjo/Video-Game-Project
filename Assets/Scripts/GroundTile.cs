@@ -12,12 +12,9 @@ public class GroundTile : MonoBehaviour
 
     void Start()
     {
-        // AUTOMATIC FIX: 
-        // This finds the GroundSpawner in your scene so you don't have to drag it 
-        // into the "Empty Box" in the Inspector.
         groundSpawner = Object.FindFirstObjectByType<GroundSpawner>();
 
-        // Check if we actually found the spawner before trying to use it later
+        
         if (groundSpawner == null)
         {
             Debug.LogError("GroundTile: Could not find a GroundSpawner in the scene! Make sure one exists.");

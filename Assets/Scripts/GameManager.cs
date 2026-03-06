@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour
     [Header("State")]
     public GameState currentState;
 
-    [Header("Coins & Goals")]
-    public int coins = 0;
+    [Header("Tokens & Goals")]
+    public int tokens = 0;
     public int highScore = 0;
-    public int coinsNeededToWin = 50;
+    public int tokensNeededToWin = 50;
 
     [Header("Countdown Settings")]
     public float countdownTime = 3f;
@@ -33,13 +33,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            
             if (inputActions != null)
             {
                 pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
@@ -62,7 +60,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
@@ -82,7 +79,6 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
 
-        
         if (UIManager.Instance == null) return;
 
         switch (currentState)
@@ -136,23 +132,25 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Playing);
     }
 
-    // ---------- COINS ----------
-    public void AddCoin(int amount)
+    // ---------- TOKENS ----------
+    public void AddToken(int amount)
     {
         if (currentState != GameState.Playing)
             return;
 
-        coins += amount;
-        if (UIManager.Instance != null) UIManager.Instance.UpdateCoinText(coins);
+        tokens += amount;
 
-        if (coins > highScore)
+        if (UIManager.Instance != null)
+            UIManager.Instance.UpdateTokenText(tokens);
+
+        if (tokens > highScore)
         {
-            highScore = coins;
+            highScore = tokens;
             PlayerPrefs.SetInt("High Score", highScore);
             PlayerPrefs.Save();
         }
 
-        if (coins >= coinsNeededToWin)
+        if (tokens >= tokensNeededToWin)
         {
             ChangeState(GameState.LevelComplete);
         }
@@ -167,7 +165,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        coins = 0;
+        tokens = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

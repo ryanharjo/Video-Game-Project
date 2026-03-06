@@ -1,13 +1,14 @@
 using UnityEngine;
 
+public class TokenPickup : MonoBehaviour
+{
+    public int tokenValue = 10;
 
-public class Collectible : MonoBehaviour
-{   
     private void OnTriggerEnter(Collider other)
     {
-        
         if (other.CompareTag("Player"))
         {
+            GameManager.Instance.AddToken(tokenValue);
             Destroy(gameObject);
         }
     }

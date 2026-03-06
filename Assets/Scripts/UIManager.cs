@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Gameplay UI")]
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI coinText;
+    public TextMeshProUGUI tokenText;
     public TextMeshProUGUI countdownText;
 
     [Header("Panels")]
@@ -20,11 +20,10 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
-    // ----------------- COINS -----------------
-    public void UpdateCoinText(int coins)
+    // ----------------- TOKENS -----------------
+    public void UpdateTokenText(int tokens)
     {
-        if (coinText != null)
-            coinText.text = "Coins: " + coins.ToString();
+        tokenText.text = "Tokens: " + tokens;
     }
 
     // ----------------- COUNTDOWN -----------------

@@ -75,13 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ee23892b4ae144aabe196ae5ac7f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundTile
-  groundSpawner: {fileID: 0}
-  obstaclePrefab: {fileID: 4560534711837831647, guid: 16340d3bfc6974744b4c33257848e668, type: 3}
-  coinPrefab: {fileID: 7699706620581342690, guid: 75d4a2754fd9c024ca1cb22cd39ecfa6, type: 3}
+  coinPrefab: {fileID: 5447164886613062888, guid: 712d68ca1b70d614fa5fde46cc3e24f9, type: 3}
   spawnPoints:
   - {fileID: 3110983865733008018}
   - {fileID: 4089108459428457631}
   - {fileID: 1994287739694069347}
+  groundSpawner: {fileID: 0}
 --- !u!1 &212783771345799856
 GameObject:
   m_ObjectHideFlags: 0
