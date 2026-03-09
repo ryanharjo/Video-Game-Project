@@ -5,6 +5,7 @@ public class GroundTile : MonoBehaviour
 {
     [Header("Settings")]
     public GameObject coinPrefab;
+    public GameObject obstaclePrefab;
     public Transform[] spawnPoints;
 
     [Header("References (Auto-filled)")]
@@ -20,22 +21,26 @@ public class GroundTile : MonoBehaviour
             Debug.LogError("GroundTile: Could not find a GroundSpawner in the scene! Make sure one exists.");
         }
 
-        SpawnCoins();
+        SpawnObjects();
     }
 
-    void SpawnCoins()
+    void SpawnObjects()
     {
-        // Safety check: Don't try to spawn if the prefab is missing
-        if (coinPrefab == null) return;
 
         foreach (Transform point in spawnPoints)
         {
-            // 30% chance to spawn a coin at each point
-            if (Random.value < 0.3f)
+            float rand = Random.value;
+
+            if (rand < 0.3f && coinPrefab != null)
             {
                 Instantiate(coinPrefab, point.position, Quaternion.identity, transform);
             }
+            else if (rand < 0.5f && obstaclePrefab != null)
+            {
+                Instantiate(obstaclePrefab, point.position, Quaternion.identity, transform);
+            }
         }
+
     }
 
     private void OnTriggerExit(Collider other)
