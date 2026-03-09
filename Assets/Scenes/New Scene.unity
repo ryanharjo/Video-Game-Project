@@ -2444,7 +2444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a38357b19dae4b4a8c243f8b080243e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRunner
-  forwardSpeed: 10
+  forwardSpeed: 25
   laneDistance: 3
   laneSwitchSpeed: 15
   jumpForce: 3
