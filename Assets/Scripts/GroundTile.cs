@@ -2,39 +2,34 @@ using UnityEngine;
 
 public class GroundTile : MonoBehaviour
 {
-   [Header("Settings")]
+    public Transform[] spawnPoints;
     public GameObject obstaclePrefab;
-    
-    public Transform[] spawnPoints; 
-
-    [Header("References (Auto-filled)")]
-    public GroundSpawner groundSpawner;
 
     void Start()
     {
-        groundSpawner = Object.FindFirstObjectByType<GroundSpawner>();
         SpawnObstacle();
     }
 
     void SpawnObstacle()
     {
-        if (obstaclePrefab != null && spawnPoints.Length > 0)
-        {
-            
-            int randomIndex = Random.Range(0, spawnPoints.Length);
-            Transform spawnPoint = spawnPoints[randomIndex];
+        if (spawnPoints.Length == 0) return;
 
-            
-            Instantiate(obstaclePrefab, spawnPoint.position, Quaternion.identity, transform);
-        }
+        int randomIndex = Random.Range(0, spawnPoints.Length);
+
+        Instantiate(
+            obstaclePrefab,
+            spawnPoints[randomIndex].position,
+            Quaternion.identity,
+            transform
+        );
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && groundSpawner != null)
+        if (other.CompareTag("Player"))
         {
-            groundSpawner.SpawnTile(Random.Range(0, groundSpawner.tilePrefabs.Length));
-            Destroy(gameObject, 2f);
+            FindFirstObjectByType<GroundSpawner>().SpawnTile();
+            Destroy(gameObject, 2);
         }
     }
 }
