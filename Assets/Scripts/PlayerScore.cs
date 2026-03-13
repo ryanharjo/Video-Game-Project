@@ -31,6 +31,6 @@ public class PlayerScore : MonoBehaviour
     void UpdateUI()
     {
         if (scoreText != null)
-            scoreText.text = "SCORE: " + score;
+            scoreText.text = "TOKENS: " + score;
     }
 }

@@ -192,29 +192,18 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";New Control Scheme",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "83344278-92eb-4a2d-a0c4-31131a1c781a",
+                    "id": "6dad35eb-7707-43c8-a524-357e47007e77",
                     "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "31915ca8-7960-4e4e-8314-3b688f718d12",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
+                    "groups": ";New Control Scheme",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false

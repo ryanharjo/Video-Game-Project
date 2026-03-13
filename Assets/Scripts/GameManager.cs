@@ -7,14 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState
-    {
-        Countdown,
-        Playing,
-        Paused,
-        GameOver,
-        LevelComplete
-    }
+    public enum GameState { Countdown, Playing, Paused, GameOver, LevelComplete }
 
     [Header("State")]
     public GameState currentState;
@@ -38,14 +31,18 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            // Initialize Input
             if (inputActions != null)
             {
                 pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
+                // Subscribe to the performed event instead of checking in Update
+                pauseAction.performed += ctx => TogglePause();
             }
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
 
@@ -55,35 +52,33 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         highScore = PlayerPrefs.GetInt("High Score", 0);
-        ChangeState(GameState.Countdown);
+        InitializeLevel();
     }
 
-    void Update()
+    // Call this whenever a new level starts to reset local variables
+    private void InitializeLevel()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            TogglePause();
-        }
+        tokens = 0;
+        ChangeState(GameState.Countdown);
     }
 
     private void TogglePause()
     {
-        if (currentState == GameState.Playing)
-            ChangeState(GameState.Paused);
-        else if (currentState == GameState.Paused)
-            ChangeState(GameState.Playing);
+        if (currentState == GameState.Playing) ChangeState(GameState.Paused);
+        else if (currentState == GameState.Paused) ChangeState(GameState.Playing);
     }
 
-    // ---------- STATE HANDLER ----------
     public void ChangeState(GameState newState)
     {
         currentState = newState;
 
+        // Safety check: Ensure UIManager is found if the scene just changed
         if (UIManager.Instance == null) return;
 
         switch (currentState)
         {
             case GameState.Countdown:
+                Time.timeScale = 1f; // Ensure time is moving for coroutines
                 StartCoroutine(StartCountdown());
                 break;
 
@@ -110,73 +105,54 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ---------- COUNTDOWN ----------
     IEnumerator StartCountdown()
     {
         if (UIManager.Instance != null) UIManager.Instance.ShowCountdownUI();
 
         float timer = countdownTime;
-
         while (timer > 0)
         {
             if (UIManager.Instance != null)
                 UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
 
+            // Use WaitForSecondsRealtime if you ever pause during countdown
             yield return new WaitForSeconds(1f);
             timer--;
         }
 
         if (UIManager.Instance != null) UIManager.Instance.UpdateCountdownText("GO!");
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         ChangeState(GameState.Playing);
     }
 
-    // ---------- TOKENS ----------
     public void AddToken(int amount)
     {
-        if (currentState != GameState.Playing)
-            return;
+        if (currentState != GameState.Playing) return;
 
         tokens += amount;
-
-        if (UIManager.Instance != null)
-            UIManager.Instance.UpdateTokenText(tokens);
+        UIManager.Instance?.UpdateTokenText(tokens);
 
         if (tokens > highScore)
         {
             highScore = tokens;
             PlayerPrefs.SetInt("High Score", highScore);
-            PlayerPrefs.Save();
         }
 
-        if (tokens >= tokensNeededToWin)
-        {
-            ChangeState(GameState.LevelComplete);
-        }
-    }
-
-    // ---------- BUTTON FUNCTIONS ----------
-    public void ResumeGame()
-    {
-        ChangeState(GameState.Playing);
+        if (tokens >= tokensNeededToWin) ChangeState(GameState.LevelComplete);
     }
 
     public void RestartGame()
     {
-        Time.timeScale = 1f;
+        // Resetting variables before load
         tokens = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Note: ChangeState(Countdown) will be called by Start() in the new scene
     }
 
     public void LoadMainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main Menu");
-    }
-
-    public void GameOver()
-    {
-        ChangeState(GameState.GameOver);
     }
 }

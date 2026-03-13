@@ -6,9 +6,9 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("Gameplay UI")]
-    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI tokenText;
     public TextMeshProUGUI countdownText;
+    public TextMeshProUGUI highScoreText; // Added to show the saved high score
 
     [Header("Panels")]
     public GameObject pausePanel;
@@ -17,27 +17,41 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        // Standard singleton assignment for scene-based UI
         Instance = this;
+    }
+
+    void Start()
+    {
+        HideAllPanels();
+
+        // Initialize text from GameManager values if they exist
+        if (GameManager.Instance != null)
+        {
+            UpdateTokenText(GameManager.Instance.tokens);
+            if (highScoreText != null)
+                highScoreText.text = "High Score: " + GameManager.Instance.highScore;
+        }
+    }
+
+    public void HideAllPanels()
+    {
+        if (pausePanel != null) pausePanel.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (winPanel != null) winPanel.SetActive(false);
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
     // ----------------- TOKENS -----------------
     public void UpdateTokenText(int tokens)
     {
-        tokenText.text = "Tokens: " + tokens;
+        if (tokenText != null)
+            tokenText.text = $"Tokens: {tokens}";
     }
 
     // ----------------- COUNTDOWN -----------------
-    public void ShowCountdownUI()
-    {
-        if (countdownText != null)
-            countdownText.gameObject.SetActive(true);
-    }
-
-    public void HideCountdownUI()
-    {
-        if (countdownText != null)
-            countdownText.gameObject.SetActive(false);
-    }
+    public void ShowCountdownUI() => countdownText?.gameObject.SetActive(true);
+    public void HideCountdownUI() => countdownText?.gameObject.SetActive(false);
 
     public void UpdateCountdownText(string value)
     {
@@ -45,30 +59,10 @@ public class UIManager : MonoBehaviour
             countdownText.text = value;
     }
 
-    // ----------------- PAUSE -----------------
-    public void ShowPauseUI()
-    {
-        if (pausePanel != null)
-            pausePanel.SetActive(true);
-    }
+    // ----------------- PANEL CONTROLS -----------------
+    public void ShowPauseUI() => pausePanel?.SetActive(true);
+    public void HidePauseUI() => pausePanel?.SetActive(false);
 
-    public void HidePauseUI()
-    {
-        if (pausePanel != null)
-            pausePanel.SetActive(false);
-    }
-
-    // ----------------- GAME OVER -----------------
-    public void ShowGameOverUI()
-    {
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
-    }
-
-    // ----------------- WIN -----------------
-    public void ShowWinUI()
-    {
-        if (winPanel != null)
-            winPanel.SetActive(true);
-    }
+    public void ShowGameOverUI() => gameOverPanel?.SetActive(true);
+    public void ShowWinUI() => winPanel?.SetActive(true);
 }
