@@ -17,6 +17,14 @@ public class Obstacle : MonoBehaviour
         canKill = true;
     }
 
+    void Update()
+    {
+        if (transform.position.z < -10)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!canKill) return;
