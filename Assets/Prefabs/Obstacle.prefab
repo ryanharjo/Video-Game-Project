@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6864369825896077525}
   - component: {fileID: -4741002936620162484}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Obstacle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4560534711837831647}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.46, y: 4, z: 2.79}
+  m_LocalPosition: {x: -1, y: 4.5, z: 2.79}
   m_LocalScale: {x: 0.4578, y: 2.8656285, z: 0.38031778}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -119,8 +119,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.041197, y: 1, z: 2.4529142}
-  m_Center: {x: 2.520599, y: 0, z: -0.7264559}
+  m_Size: {x: 6.041197, y: 1, z: 1.1983576}
+  m_Center: {x: 2.520599, y: 0, z: -0.09917762}
 --- !u!114 &-4741002936620162484
 MonoBehaviour:
   m_ObjectHideFlags: 0

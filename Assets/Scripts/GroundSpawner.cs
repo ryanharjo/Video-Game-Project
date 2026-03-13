@@ -6,7 +6,7 @@ public class GroundSpawner : MonoBehaviour
     public GameObject groundTilePrefab;
     public Transform player;
 
-    private float tileLength = 30f;
+    private float tileLength = 10f;
     private float spawnZ = 0;
     private int tilesOnScreen = 5;
 

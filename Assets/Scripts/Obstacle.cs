@@ -28,10 +28,12 @@ public class Obstacle : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!canKill) return;
+
         if (other.CompareTag("Player"))
         {
             Debug.Log("Game Over!");
-            Time.timeScale = 0f;
+
+            GameManager.Instance.GameOver();
         }
     }
 }

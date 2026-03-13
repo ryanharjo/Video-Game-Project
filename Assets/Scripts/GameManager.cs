@@ -26,23 +26,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            // Initialize Input
-            if (inputActions != null)
-            {
-                pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
-                // Subscribe to the performed event instead of checking in Update
-                pauseAction.performed += ctx => TogglePause();
-            }
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        
+        if (inputActions != null)
+        {
+            pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
+            pauseAction.performed += ctx => TogglePause();
         }
     }
 
@@ -55,9 +52,10 @@ public class GameManager : MonoBehaviour
         InitializeLevel();
     }
 
-    // Call this whenever a new level starts to reset local variables
+    
     private void InitializeLevel()
     {
+        Time.timeScale = 1f;   
         tokens = 0;
         ChangeState(GameState.Countdown);
     }
@@ -72,8 +70,12 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
 
-        // Safety check: Ensure UIManager is found if the scene just changed
-        if (UIManager.Instance == null) return;
+        
+        if (UIManager.Instance == null)
+        {
+            Debug.LogWarning("UIManager not found yet.");
+            return;
+        }
 
         switch (currentState)
         {
@@ -142,12 +144,19 @@ public class GameManager : MonoBehaviour
         if (tokens >= tokensNeededToWin) ChangeState(GameState.LevelComplete);
     }
 
+    public void GameOver()
+    {
+        if (currentState != GameState.Playing) return;
+
+        ChangeState(GameState.GameOver);
+    }
+
     public void RestartGame()
     {
-        // Resetting variables before load
+        Time.timeScale = 1f; 
         tokens = 0;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        // Note: ChangeState(Countdown) will be called by Start() in the new scene
     }
 
     public void LoadMainMenu()
