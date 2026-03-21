@@ -2526,9 +2526,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c0d9c86a4b64541aca7d1f3554975e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
-  obstaclePrefab: {fileID: 4560534711837831647, guid: 16340d3bfc6974744b4c33257848e668, type: 3}
-  spawnRate: 2
-  laneDistance: 3
+  obstaclePrefab: {fileID: 8105634333360081785, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
+  lanes:
+  - -3
+  spawnZ: 50
+  spawnY: 1
+  spawnRate: 1
 --- !u!1 &1385698696
 GameObject:
   m_ObjectHideFlags: 0

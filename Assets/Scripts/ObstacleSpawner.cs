@@ -4,24 +4,26 @@ public class ObstacleSpawner : MonoBehaviour
 {
     public GameObject obstaclePrefab;
 
+    // Lane positions
+    public float[] lanes = { -3f, 0f, 3f };
+
+    public float spawnZ = 50f;
+    public float spawnY = 4f;
+
+
     public float spawnRate = 2f;
-    public float laneDistance = 3f;
 
     void Start()
     {
-        InvokeRepeating(nameof(SpawnObstacle), 2f, spawnRate);
+        InvokeRepeating("SpawnObstacle", 1f, spawnRate);
     }
 
     void SpawnObstacle()
     {
-        int lane = Random.Range(-1, 2);
+        int randomLane = Random.Range(0, lanes.Length);
 
-        Vector3 spawnPos = new Vector3(
-            lane * laneDistance,
-            transform.position.y,
-            transform.position.z
-        );
+        Vector3 spawnPosition = new Vector3(lanes[randomLane], spawnY, spawnZ);
 
-        Instantiate(obstaclePrefab, spawnPos, Quaternion.identity);
+        Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
     }
 }
