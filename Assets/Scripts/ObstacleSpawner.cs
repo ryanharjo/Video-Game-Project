@@ -8,7 +8,7 @@ public class ObstacleSpawner : MonoBehaviour
     public float[] lanes = { -3f, 0f, 3f };
 
     public float spawnZ = 50f;
-    public float spawnY = 4f;
+    public float spawnY = 1f;
 
 
     public float spawnRate = 2f;
