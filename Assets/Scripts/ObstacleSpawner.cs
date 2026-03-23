@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -7,11 +7,14 @@ public class ObstacleSpawner : MonoBehaviour
     // Lane positions
     public float[] lanes = { -3f, 0f, 3f };
 
-    public float spawnZ = 50f;
+    public float spawnDistance = 50f; 
     public float spawnY = 1f;
 
-
     public float spawnRate = 2f;
+    float lastSpawnZ = 0f;
+    public float minDistanceBetweenObstacles = 20f;
+
+    public Transform player; 
 
     void Start()
     {
@@ -22,8 +25,20 @@ public class ObstacleSpawner : MonoBehaviour
     {
         int randomLane = Random.Range(0, lanes.Length);
 
-        Vector3 spawnPosition = new Vector3(lanes[randomLane], spawnY, spawnZ);
+        // Ensure each obstacle is spaced out
+        float spawnZPos = Mathf.Max(
+            player.position.z + spawnDistance,
+            lastSpawnZ + minDistanceBetweenObstacles
+        );
+
+        Vector3 spawnPosition = new Vector3(
+            lanes[randomLane],
+            spawnY,
+            spawnZPos
+        );
 
         Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
+
+        lastSpawnZ = spawnZPos;
     }
 }

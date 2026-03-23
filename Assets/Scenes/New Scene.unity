@@ -2529,9 +2529,11 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 8105634333360081785, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
   lanes:
   - -3
-  spawnZ: 50
+  spawnDistance: 50
   spawnY: 1
   spawnRate: 1
+  minDistanceBetweenObstacles: 20
+  player: {fileID: 1413780192}
 --- !u!1 &1385698696
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,7 +2581,7 @@ MonoBehaviour:
   currentState: 0
   tokens: 0
   highScore: 0
-  tokensNeededToWin: 150
+  tokensNeededToWin: 250
   countdownTime: 3
   inputActions: {fileID: -944628639613478452, guid: 01d451799abff394699d6b809940a5c8, type: 3}
 --- !u!4 &1385698699
