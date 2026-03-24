@@ -14,82 +14,58 @@ public class MainMenu : MonoBehaviour
     public GameObject creditsPanel;
     public GameObject settingsPanel;
 
-    [Header("Audio Settings")]
-    [SerializeField] private AudioMixer mainMixer;
+    [Header("UI Elements")]
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider musicSlider;
-
-    // Keys for saving/loading
-    private const string MASTER_KEY = "MasterVolValue";
-    private const string MUSIC_KEY = "MusicVolValue";
 
     private void Start()
     {
         ShowMain();
-        LoadAudioSettings(); // Load volume from PlayerPrefs on start
+        SetupSliders();
     }
 
-    // --- Audio Logic ---
-
-    private void LoadAudioSettings()
+    private void SetupSliders()
     {
-        // Get saved values (default to 0.75 if they don't exist yet)
-        float masterVal = PlayerPrefs.GetFloat(MASTER_KEY, 0.75f);
-        float musicVal = PlayerPrefs.GetFloat(MUSIC_KEY, 0.75f);
+       
+        float masterVal = PreferencesManager.GetMasterVolume();
+        float musicVal = PreferencesManager.GetMusicVolume();
 
-        // Update Slider UI
+        
         masterSlider.value = masterVal;
         musicSlider.value = musicVal;
 
-        // Apply values to the Mixer
-        SetMasterVolume(masterVal);
-        SetMusicVolume(musicVal);
+        
+        masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        musicSlider.onValueChanged.AddListener(SetMusicVolume);
     }
 
     public void SetMasterVolume(float value)
     {
-        // Logarithmic conversion for natural sound attenuation
-        mainMixer.SetFloat("MasterVol", Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat(MASTER_KEY, value);
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.ChangeMasterVolume(value);
     }
 
     public void SetMusicVolume(float value)
     {
-        mainMixer.SetFloat("MusicVol", Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat(MUSIC_KEY, value);
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.ChangeMusicVolume(value);
     }
 
     // --- Navigation Logic ---
-
     public void PlayGame()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(gameSceneName);
     }
 
-    public void OpenCredits()
-    {
-        mainPanel.SetActive(false);
-        creditsPanel.SetActive(true);
-        settingsPanel.SetActive(false);
-    }
+    public void OpenCredits() => SwitchPanel(creditsPanel);
+    public void OpenSettings() => SwitchPanel(settingsPanel);
+    public void ShowMain() => SwitchPanel(mainPanel);
 
-    public void OpenSettings()
+    private void SwitchPanel(GameObject activePanel)
     {
-        mainPanel.SetActive(false);
-        creditsPanel.SetActive(false);
-        settingsPanel.SetActive(true);
-    }
-
-    public void Back()
-    {
-        ShowMain();
-    }
-
-    void ShowMain()
-    {
-        mainPanel.SetActive(true);
-        creditsPanel.SetActive(false);
-        settingsPanel.SetActive(false);
+        mainPanel.SetActive(activePanel == mainPanel);
+        creditsPanel.SetActive(activePanel == creditsPanel);
+        settingsPanel.SetActive(activePanel == settingsPanel);
     }
 }

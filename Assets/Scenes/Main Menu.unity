@@ -1951,10 +1951,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1478472109}
   m_HandleRect: {fileID: 355167967}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 20
+  m_MinValue: 0.0001
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2145,7 +2145,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788133388}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3660537791618513960, guid: 995169cd327506a429fadc6ecf5ec9c6, type: 2}
   m_audioClip: {fileID: 0}
@@ -2485,7 +2485,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1062259985}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: Back
+        m_MethodName: ShowMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2952,7 +2952,6 @@ MonoBehaviour:
   mainPanel: {fileID: 392994336}
   creditsPanel: {fileID: 616235659}
   settingsPanel: {fileID: 889897124}
-  mainMixer: {fileID: 24100000, guid: 995169cd327506a429fadc6ecf5ec9c6, type: 2}
   masterSlider: {fileID: 1103604981}
   musicSlider: {fileID: 676813737}
 --- !u!4 &1062259986
@@ -5054,7 +5053,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1062259985}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: Back
+        m_MethodName: ShowMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

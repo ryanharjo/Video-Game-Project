@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadSettings(); // Apply saved volumes on startup
+            LoadSettings();
         }
         else { Destroy(gameObject); }
     }
@@ -25,13 +25,16 @@ public class AudioManager : MonoBehaviour
 
     public void ChangeMasterVolume(float soundLevel)
     {
-        masterMixer.SetFloat("MasterVol", soundLevel);
+        // Convert 0-1 to Decibels
+        float dB = soundLevel > 0 ? Mathf.Log10(soundLevel) * 20 : -80f;
+        masterMixer.SetFloat("MasterVol", dB);
         PreferencesManager.SetMasterVolume(soundLevel);
     }
 
     public void ChangeMusicVolume(float soundLevel)
     {
-        masterMixer.SetFloat("MusicVol", soundLevel);
+        float dB = soundLevel > 0 ? Mathf.Log10(soundLevel) * 20 : -80f;
+        masterMixer.SetFloat("MusicVol", dB);
         PreferencesManager.SetMusicVolume(soundLevel);
     }
 }
