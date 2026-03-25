@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundTile
   spawnPoints:
-  - {fileID: 3110983865733008018}
-  - {fileID: 1994287739694069347}
+  - {fileID: 1872847347898235292, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
+  - {fileID: 1872847347898235292, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
   obstaclePrefab: {fileID: 8105634333360081785, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
 --- !u!1 &212783771345799856
 GameObject:
