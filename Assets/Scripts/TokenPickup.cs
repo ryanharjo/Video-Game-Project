@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class TokenPickup : MonoBehaviour
 {
-    public int tokenValue = 10;
+    public AudioClip collectSound;
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.AddToken(tokenValue);
+            AudioSource audio = Camera.main.GetComponent<AudioSource>();
+
+            audio.pitch = Random.Range(0.9f, 1.1f);
+            audio.PlayOneShot(collectSound);
+
             Destroy(gameObject);
         }
     }
