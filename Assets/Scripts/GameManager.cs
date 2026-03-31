@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("Tokens & Goals")]
     public int tokens = 0;
     public int highScore = 0;
-    public int tokensNeededToWin = 50;
+    public int targetTokens = 50;
 
     [Header("Countdown Settings")]
     public float countdownTime = 3f;
@@ -141,7 +141,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("High Score", highScore);
         }
 
-        if (tokens >= tokensNeededToWin) ChangeState(GameState.LevelComplete);
+        // Spawn finish line if token goal reached, but DO NOT complete level yet
+        if (tokens >= targetTokens)
+        {
+            GroundSpawner spawner = FindFirstObjectByType<GroundSpawner>();
+            if (spawner != null)
+                spawner.SpawnTile(); // This will spawn the finish line
+        }
     }
 
     public void GameOver()
