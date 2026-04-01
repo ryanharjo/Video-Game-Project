@@ -2811,7 +2811,7 @@ MonoBehaviour:
   currentState: 0
   tokens: 0
   highScore: 0
-  targetTokens: 50
+  targetTokens: 150
   countdownTime: 3
   inputActions: {fileID: -944628639613478452, guid: 01d451799abff394699d6b809940a5c8, type: 3}
 --- !u!4 &1385698699
