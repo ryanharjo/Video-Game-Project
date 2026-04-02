@@ -26,19 +26,19 @@ public class GroundSpawner : MonoBehaviour
 
     void Update()
     {
-        // Spawn tiles as player moves forward
+        if (finishSpawned) return;
         if (player.position.z > spawnZ - (tilesOnScreen * tileLength))
         {
             SpawnTile();
         }
     }
 
-    // Spawn tile method
+    
     public void SpawnTile()
     {
         GameObject tileToSpawn = groundTilePrefab;
 
-        // Spawn finish line immediately when token goal reached
+        
         if (!finishSpawned && GameManager.Instance.tokens >= GameManager.Instance.targetTokens)
         {
             tileToSpawn = finishLinePrefab;

@@ -8,6 +8,7 @@ public class PlayerRunner : MonoBehaviour
     public float forwardSpeed = 10f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
+    private bool isFinished = false;
 
     [Header("Jump Settings")]
     public float jumpForce = 5.5f;   // Lower jump
@@ -52,29 +53,27 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
-        HandleInput();
+        if (!isFinished)
+        {
+            HandleInput();
+            UpdateAnimator();
+        }
+
         HandleMovement();
-        UpdateAnimator();
     }
 
     void HandleMovement()
     {
-        // Lane movement
+
         float targetX = (currentLane - 1) * laneDistance;
-
         Vector3 currentPosition = transform.position;
-        float newX = Mathf.MoveTowards(
-            currentPosition.x,
-            targetX,
-            laneSwitchSpeed * Time.deltaTime
-        );
-
+        float newX = Mathf.MoveTowards(currentPosition.x, targetX, laneSwitchSpeed * Time.deltaTime);
         float xDelta = newX - currentPosition.x;
 
-        // ALWAYS apply gravity
+
         velocity.y += gravity * Time.deltaTime;
 
-        // Faster falling (better runner feel)
+
         if (velocity.y < 0)
         {
             velocity.y += gravity * (fallMultiplier - 1) * Time.deltaTime;
@@ -85,25 +84,21 @@ public class PlayerRunner : MonoBehaviour
 
         if (controller.isGrounded)
         {
-            if (velocity.y < 0)
-                velocity.y = -2f; // Stick to ground
+            if (velocity.y < 0) velocity.y = -2f;
 
-            if (jumpPressed)
+            if (jumpPressed && !isFinished)
             {
                 velocity.y = jumpForce;
 
-                if (animator != null)
-                    animator.SetTrigger("Jump");
+                if (animator != null) animator.SetTrigger("Jump");
 
                 mobileJumpInput = false;
             }
         }
 
-        Vector3 moveVector = new Vector3(
-            xDelta,
-            velocity.y,
-            forwardSpeed * Time.deltaTime
-        );
+        float currentForwardMove = isFinished ? 0f : forwardSpeed * Time.deltaTime;
+
+        Vector3 moveVector = new Vector3(xDelta, velocity.y, currentForwardMove);
 
         controller.Move(moveVector);
     }
@@ -152,5 +147,23 @@ public class PlayerRunner : MonoBehaviour
     public void JumpInput(bool value)
     {
         mobileJumpInput = value;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("FinishLine"))
+        {
+            CompleteLevel();
+        }
+    }
+
+    void CompleteLevel()
+    {
+        isFinished = true;
+        if (animator != null)
+        {
+            animator.SetBool("IsRunning", false);
+            animator.SetTrigger("Idle"); 
+        }
     }
 }
