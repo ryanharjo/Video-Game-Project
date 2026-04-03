@@ -2761,7 +2761,7 @@ MonoBehaviour:
   - 3
   spawnDistance: 50
   spawnY: 0
-  spawnRate: 2.5
+  spawnRate: 5
   minDistanceBetweenObstacles: 15
   player: {fileID: 1413780192}
 --- !u!1 &1385698696
@@ -4155,8 +4155,8 @@ MonoBehaviour:
   - 0
   - 3
   player: {fileID: 1413780192}
-  spawnDistance: 40
-  spawnRate: 3
+  spawnDistance: 30
+  spawnRate: 5
   spawnY: 2
 --- !u!4 &1972931289
 Transform:
