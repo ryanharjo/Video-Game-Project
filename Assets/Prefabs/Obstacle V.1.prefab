@@ -1983,7 +1983,7 @@ GameObject:
   - component: {fileID: 5976589264705201490}
   - component: {fileID: 576543227168169653}
   m_Layer: 0
-  m_Name: Obstacle
+  m_Name: Obstacle V.1
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -43,8 +43,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnEnable() => pauseAction?.Enable();
-    private void OnDisable() => pauseAction?.Disable();
+    private void OnEnable()
+    {
+        pauseAction?.Enable();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+
+    private void OnDisable()
+    {
+        pauseAction?.Disable();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        highScore = PlayerPrefs.GetInt("High Score", 0);
+        InitializeLevel();
+    }
+
 
     void Start()
     {
@@ -52,7 +69,15 @@ public class GameManager : MonoBehaviour
         InitializeLevel();
     }
 
-    
+    private void SaveHighScore()
+    {
+        if (tokens > highScore)
+        {
+            highScore = tokens;
+            PlayerPrefs.SetInt("High Score", highScore);
+        }
+    }
+
     private void InitializeLevel()
     {
         Time.timeScale = 1f;   
@@ -70,7 +95,13 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
 
-        
+        if (currentState == GameState.LevelComplete)
+        {
+            SaveHighScore();
+        }
+
+
+
         if (UIManager.Instance == null)
         {
             Debug.LogWarning("UIManager not found yet.");
@@ -139,29 +170,31 @@ public class GameManager : MonoBehaviour
         {
             highScore = tokens;
             PlayerPrefs.SetInt("High Score", highScore);
+
+
+            UIManager.Instance?.UpdateHighScoreText(highScore);
         }
 
-        // Spawn finish line if token goal reached, but DO NOT complete level yet
         if (tokens >= targetTokens)
         {
             GroundSpawner spawner = FindFirstObjectByType<GroundSpawner>();
             if (spawner != null)
-                spawner.SpawnTile(); // This will spawn the finish line
+                spawner.SpawnTile();
         }
     }
 
     public void GameOver()
     {
         if (currentState != GameState.Playing) return;
-
+        SaveHighScore();
         ChangeState(GameState.GameOver);
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f; 
-        tokens = 0;
-
+        
+        currentState = GameState.Countdown;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     [Header("Gameplay UI")]
     public TextMeshProUGUI tokenText;
     public TextMeshProUGUI countdownText;
-    public TextMeshProUGUI highScoreText; // Added to show the saved high score
+    public TextMeshProUGUI highScoreText; 
 
     [Header("Panels")]
     public GameObject pausePanel;
@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        // Standard singleton assignment for scene-based UI
+        
         Instance = this;
     }
 
@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        // Initialize text from GameManager values if they exist
+        
         if (GameManager.Instance != null)
         {
             UpdateTokenText(GameManager.Instance.tokens);
@@ -40,6 +40,22 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (winPanel != null) winPanel.SetActive(false);
         if (countdownText != null) countdownText.gameObject.SetActive(false);
+    }
+
+    public void RestartGame()
+    {
+        GameManager.Instance?.RestartGame();
+    }
+
+    public void LoadMainMenu()
+    {
+        GameManager.Instance?.LoadMainMenu();
+    }
+
+    public void UpdateHighScoreText(int score)
+    {
+        if (highScoreText != null)
+            highScoreText.text = "High Score: " + score;
     }
 
     // ----------------- TOKENS -----------------
@@ -64,5 +80,6 @@ public class UIManager : MonoBehaviour
     public void HidePauseUI() => pausePanel?.SetActive(false);
 
     public void ShowGameOverUI() => gameOverPanel?.SetActive(true);
+
     public void ShowWinUI() => winPanel?.SetActive(true);
 }
