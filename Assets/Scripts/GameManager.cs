@@ -24,6 +24,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     private InputAction pauseAction;
 
+    public enum WinCondition
+    {
+        Tokens,
+        ReachEnd,
+        SurviveTime
+    }
+
+    [Header("Win Condition")]
+    public WinCondition winCondition;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -59,6 +69,10 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         highScore = PlayerPrefs.GetInt("High Score", 0);
+        if (UIManager.Instance == null)
+        {
+            Debug.Log("Waiting for UIManager...");
+        }
         InitializeLevel();
     }
 
@@ -82,6 +96,9 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;   
         tokens = 0;
+        UIManager.Instance?.UpdateTokenText(tokens);
+        UIManager.Instance?.UpdateHighScoreText(highScore);
+
         ChangeState(GameState.Countdown);
     }
 
@@ -177,9 +194,12 @@ public class GameManager : MonoBehaviour
 
         if (tokens >= targetTokens)
         {
-            GroundSpawner spawner = FindFirstObjectByType<GroundSpawner>();
-            if (spawner != null)
-                spawner.SpawnTile();
+            ChangeState(GameState.LevelComplete);
+        }
+
+        if (winCondition == WinCondition.Tokens && tokens >= targetTokens)
+        {
+            ChangeState(GameState.LevelComplete);
         }
     }
 
