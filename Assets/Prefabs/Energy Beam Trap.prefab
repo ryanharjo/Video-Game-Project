@@ -229,6 +229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6612526414047170245}
   - component: {fileID: 1826045615866470703}
+  - component: {fileID: 4799261000519945903}
   m_Layer: 0
   m_Name: Energy Beam Trap
   m_TagString: Untagged
@@ -245,7 +246,7 @@ Transform:
   m_GameObject: {fileID: 4702667812018007971}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.27922, y: 0.5, z: 12.847}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -282,6 +283,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99723005, y: 3.0958781, z: 0.9009495}
   m_Center: {x: -0.5275128, y: 1.1782236, z: 0.8859806}
+--- !u!114 &4799261000519945903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4702667812018007971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7a723787c54b44e9e7dc052c0c861d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnergyBeamTrap
 --- !u!1001 &55783150341058626
 PrefabInstance:
   m_ObjectHideFlags: 0
