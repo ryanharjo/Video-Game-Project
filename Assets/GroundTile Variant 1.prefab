@@ -930,7 +930,11 @@ PrefabInstance:
       objectReference: {fileID: 4131659147373901727}
     - target: {fileID: -4240931944495665716, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: obstaclePrefabs.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4240931944495665716, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
+      propertyPath: 'obstaclePrefabs.Array.data[0]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: -4240931944495665716, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: 'obstaclePrefabs.Array.data[1]'
