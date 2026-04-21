@@ -74,10 +74,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ee23892b4ae144aabe196ae5ac7f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundTile
-  obstaclePrefabs: []
-  spawnPoints:
-  - {fileID: 1872847347898235292, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
-  - {fileID: 1872847347898235292, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
 --- !u!1 &212783771345799856
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,6 +119,7 @@ GameObject:
   - component: {fileID: 3770043200219829033}
   - component: {fileID: 5733380611847779345}
   - component: {fileID: 1167646482932280062}
+  - component: {fileID: 5583727299264855374}
   m_Layer: 0
   m_Name: Pipe
   m_TagString: Untagged
@@ -15647,6 +15644,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &5583727299264855374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396215201915735283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f1e4dfc3655d04aac26c5b5fc87b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorSwitcher
+  colorA: {r: 0, g: 1, b: 0, a: 1}
+  colorB: {r: 1, g: 0, b: 0, a: 1}
+  speed: 2
 --- !u!1 &5299420433710332837
 GameObject:
   m_ObjectHideFlags: 0
@@ -15900,7 +15912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11475718, guid: 11530f2b0a0cd2442949827ecbb622f2, type: 3}
       propertyPath: m_lineColor.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15982,7 +15994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11475718, guid: 11530f2b0a0cd2442949827ecbb622f2, type: 3}
       propertyPath: m_lineColor.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
