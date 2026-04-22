@@ -2,6 +2,8 @@
 
 public class EnergyBeamTrap : MonoBehaviour
 {
+    public Animator playerAnimator;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -24,8 +26,15 @@ public class EnergyBeamTrap : MonoBehaviour
     {
         if (GameManager.Instance.currentState != GameManager.GameState.GameOver)
         {
+            playerAnimator.SetTrigger("Die");
+            Invoke("DelayedGameOver", 2f);
             Debug.Log("⚡ Player killed by energy beam");
             GameManager.Instance.GameOver();
         }
+    }
+
+    void DelayedGameOver()
+    {
+        GameManager.Instance.GameOver();
     }
 }
