@@ -108,6 +108,23 @@ public class GameManager : MonoBehaviour
         else if (currentState == GameState.Paused) ChangeState(GameState.Playing);
     }
 
+    public void ResetHighScore()
+    {
+        // 1. Delete the specific key from the computer's storage
+        PlayerPrefs.DeleteKey("High Score");
+
+        // 2. Reset the local variable so the UI updates immediately
+        highScore = 0;
+
+        // 3. Update the UI text
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHighScoreText(highScore);
+        }
+
+        Debug.Log("High Score has been reset!");
+    }
+
     public void ChangeState(GameState newState)
     {
         currentState = newState;
