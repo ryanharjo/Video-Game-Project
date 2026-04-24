@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8774596014085656981}
   - component: {fileID: 1491789320152587382}
   - component: {fileID: -4240931944495665716}
+  - component: {fileID: 1661841614366498533}
   m_Layer: 0
   m_Name: GroundTile
   m_TagString: Ground
@@ -74,6 +75,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ee23892b4ae144aabe196ae5ac7f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundTile
+--- !u!114 &1661841614366498533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51448068224366950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d2e741bc8509145b7b87f961de4f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
+  obstaclePrefabs:
+  - {fileID: 8105634333360081785, guid: 87913fa6918b47745b44713a11ab0ef9, type: 3}
+  spawnPoints:
+  - {fileID: 3110983865733008018}
+  - {fileID: 1994287739694069347}
+  spawnChance: 0.5
 --- !u!1 &212783771345799856
 GameObject:
   m_ObjectHideFlags: 0
