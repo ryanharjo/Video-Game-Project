@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [Header("Scene")]
-    public string gameSceneName = "New Scene";
+    public string gameSceneName = "Level 1";
 
     [Header("Panels")]
     public GameObject mainPanel;
