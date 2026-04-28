@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1449064860000398837, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.38383472
+      value: 1.0353305
       objectReference: {fileID: 0}
     - target: {fileID: 1449064860000398837, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.3630459
+      value: 1.540966
       objectReference: {fileID: 0}
     - target: {fileID: 1449064860000398837, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -60,6 +60,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1449064860000398838, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1449064860000398838, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1449064860000398838, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1449064860000398839, guid: de89c977f177310489b6d6cb12a9a3f6, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -84,7 +96,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 51448068224366950, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: m_Name
-      value: GroundTile Variant
+      value: GroundTile Variant 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7129077191013967459, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
+      propertyPath: m_lineColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7327644331949681010, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
+      propertyPath: m_lineColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8774596014085656981, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: m_LocalPosition.x

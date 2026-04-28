@@ -812,8 +812,9 @@ MonoBehaviour:
   jumpForce: 7
   gravity: -25
   fallMultiplier: 1.5
-  levelCompletePanel: {fileID: 0}
+  levelCompletePanel: {fileID: 2119421017582051947}
   uiDelay: 2
+  runningSFX: {fileID: 8675303142243432418}
 --- !u!143 &1413780189
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2132,6 +2133,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8377adab4b85b047afa8e018c2b8655, type: 3}
+--- !u!82 &8675303142243432418 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2993349182052516060, guid: a8377adab4b85b047afa8e018c2b8655, type: 3}
+  m_PrefabInstance: {fileID: 8675303142243432417}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

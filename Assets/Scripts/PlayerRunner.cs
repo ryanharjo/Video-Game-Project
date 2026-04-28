@@ -20,6 +20,8 @@ public class PlayerRunner : MonoBehaviour
     public GameObject levelCompletePanel;
     public float uiDelay = 2.0f;
 
+
+
     private CharacterController controller;
     private Animator animator;
     private PlayerInput playerInput;

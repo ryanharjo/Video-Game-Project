@@ -962,6 +962,7 @@ MonoBehaviour:
   fallMultiplier: 1.5
   levelCompletePanel: {fileID: 2119421017582051947}
   uiDelay: 2
+  runningSFX: {fileID: 1413780196}
 --- !u!143 &1413780189
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1093,6 +1094,103 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: -1.8, z: 0}
+--- !u!82 &1413780196
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413780187}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 995169cd327506a429fadc6ecf5ec9c6, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: abdc96f274ffd1047b1e70c793b1b702, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1420013444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,8 +1402,7 @@ PrefabInstance:
         'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
         'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
         'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-        'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Breathing Idle'\n\tFrom
-        animation clip 'Falling Back Death'"
+        'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Breathing Idle'"
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 69c1b575001b22549bcce7755e37c671, type: 3}
       propertyPath: m_ApplyRootMotion
@@ -1327,6 +1424,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c1b575001b22549bcce7755e37c671, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1413780194}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 69c1b575001b22549bcce7755e37c671, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1413780196}
   m_SourcePrefab: {fileID: 100100000, guid: 69c1b575001b22549bcce7755e37c671, type: 3}
 --- !u!1 &1885039967
 GameObject:
@@ -1521,6 +1621,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1413780192}
+    - target: {fileID: 6031033806030273682, guid: e4293050f17915244aa7e4dc10b35193, type: 3}
+      propertyPath: spawnRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031033806030273682, guid: e4293050f17915244aa7e4dc10b35193, type: 3}
+      propertyPath: spawnDistance
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
