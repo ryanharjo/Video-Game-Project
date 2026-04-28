@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1708794394}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: ResetHighScore
         m_Mode: 1
@@ -1275,6 +1275,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547661616}
   m_CullTransparentMesh: 1
+--- !u!114 &1708794394 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3579012599357111100, guid: 867b5c5eafb538d459dc2680e3f24c9b, type: 3}
+  m_PrefabInstance: {fileID: 5681017593099549154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc998ee2d6f20a14b9f285ee9af1cb55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1 &1885039967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,7 +1640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 714641015012150063, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 335
+      value: 251
       objectReference: {fileID: 0}
     - target: {fileID: 714641015012150063, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_AnchoredPosition.y

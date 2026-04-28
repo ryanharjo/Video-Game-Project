@@ -1,13 +1,21 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System.Collections;
+using static UnityEngine.Timeline.DirectorControlPlayable;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum GameState { Countdown, Playing, Paused, GameOver, LevelComplete }
+    public enum GameState
+    {
+        Countdown,
+        Playing,
+        Paused,
+        GameOver,
+        LevelComplete
+    }
 
     [Header("State")]
     public GameState currentState;
@@ -24,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     private InputAction pauseAction;
 
+    private Coroutine countdownCoroutine;
+
     public enum WinCondition
     {
         Tokens,
@@ -36,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        // Singleton setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -45,84 +56,85 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        
+        // Get pause input action
         if (inputActions != null)
         {
-            pauseAction = inputActions.FindActionMap("UI").FindAction("Pause");
-            pauseAction.performed += ctx => TogglePause();
+            InputActionMap uiMap = inputActions.FindActionMap("UI");
+
+            if (uiMap != null)
+            {
+                pauseAction = uiMap.FindAction("Pause");
+            }
         }
     }
 
     private void OnEnable()
     {
-        pauseAction?.Enable();
+        if (pauseAction != null)
+        {
+            pauseAction.performed += OnPausePressed;
+            pauseAction.Enable();
+        }
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-
     private void OnDisable()
     {
-        pauseAction?.Disable();
+        if (pauseAction != null)
+        {
+            pauseAction.performed -= OnPausePressed;
+            pauseAction.Disable();
+        }
+
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        highScore = PlayerPrefs.GetInt("High Score", 0);
+        InitializeLevel();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         highScore = PlayerPrefs.GetInt("High Score", 0);
+
         if (UIManager.Instance == null)
         {
             Debug.Log("Waiting for UIManager...");
         }
+
         InitializeLevel();
     }
 
-
-    void Start()
+    private void OnPausePressed(InputAction.CallbackContext context)
     {
-        highScore = PlayerPrefs.GetInt("High Score", 0);
-        InitializeLevel();
+        TogglePause();
     }
 
-    private void SaveHighScore()
+    private void TogglePause()
     {
-        if (tokens > highScore)
+        // Only allow pause during gameplay
+        if (currentState == GameState.Playing)
         {
-            highScore = tokens;
-            PlayerPrefs.SetInt("High Score", highScore);
+            ChangeState(GameState.Paused);
+        }
+        else if (currentState == GameState.Paused)
+        {
+            ChangeState(GameState.Playing);
         }
     }
 
     private void InitializeLevel()
     {
-        Time.timeScale = 1f;   
+        Time.timeScale = 1f;
         tokens = 0;
+
         UIManager.Instance?.UpdateTokenText(tokens);
         UIManager.Instance?.UpdateHighScoreText(highScore);
 
         ChangeState(GameState.Countdown);
-    }
-
-    private void TogglePause()
-    {
-        if (currentState == GameState.Playing) ChangeState(GameState.Paused);
-        else if (currentState == GameState.Paused) ChangeState(GameState.Playing);
-    }
-
-    public void ResetHighScore()
-    {
-        // 1. Delete the specific key from the computer's storage
-        PlayerPrefs.DeleteKey("High Score");
-
-        // 2. Reset the local variable so the UI updates immediately
-        highScore = 0;
-
-        // 3. Update the UI text
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.UpdateHighScoreText(highScore);
-        }
-
-        Debug.Log("High Score has been reset!");
     }
 
     public void ChangeState(GameState newState)
@@ -134,8 +146,6 @@ public class GameManager : MonoBehaviour
             SaveHighScore();
         }
 
-
-
         if (UIManager.Instance == null)
         {
             Debug.LogWarning("UIManager not found yet.");
@@ -145,50 +155,70 @@ public class GameManager : MonoBehaviour
         switch (currentState)
         {
             case GameState.Countdown:
-                Time.timeScale = 1f; // Ensure time is moving for coroutines
-                StartCoroutine(StartCountdown());
+
+                Time.timeScale = 1f;
+
+                if (countdownCoroutine != null)
+                {
+                    StopCoroutine(countdownCoroutine);
+                }
+
+                countdownCoroutine = StartCoroutine(StartCountdown());
                 break;
 
             case GameState.Playing:
+
                 Time.timeScale = 1f;
                 UIManager.Instance.HideCountdownUI();
                 UIManager.Instance.HidePauseUI();
                 break;
 
             case GameState.Paused:
+
                 Time.timeScale = 0f;
                 UIManager.Instance.ShowPauseUI();
                 break;
 
             case GameState.GameOver:
+
                 Time.timeScale = 0f;
                 UIManager.Instance.ShowGameOverUI();
                 break;
 
             case GameState.LevelComplete:
+
                 Time.timeScale = 0f;
                 UIManager.Instance.ShowWinUI();
                 break;
         }
     }
 
-    IEnumerator StartCountdown()
+    private IEnumerator StartCountdown()
     {
-        if (UIManager.Instance != null) UIManager.Instance.ShowCountdownUI();
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowCountdownUI();
+        }
 
         float timer = countdownTime;
+
         while (timer > 0)
         {
             if (UIManager.Instance != null)
+            {
                 UIManager.Instance.UpdateCountdownText(Mathf.Ceil(timer).ToString());
+            }
 
-            // Use WaitForSecondsRealtime if you ever pause during countdown
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1f);
             timer--;
         }
 
-        if (UIManager.Instance != null) UIManager.Instance.UpdateCountdownText("GO!");
-        yield return new WaitForSeconds(0.5f);
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateCountdownText("GO!");
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
 
         ChangeState(GameState.Playing);
     }
@@ -198,20 +228,14 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.Playing) return;
 
         tokens += amount;
+
         UIManager.Instance?.UpdateTokenText(tokens);
 
         if (tokens > highScore)
         {
             highScore = tokens;
             PlayerPrefs.SetInt("High Score", highScore);
-
-
             UIManager.Instance?.UpdateHighScoreText(highScore);
-        }
-
-        if (tokens >= targetTokens)
-        {
-            ChangeState(GameState.LevelComplete);
         }
 
         if (winCondition == WinCondition.Tokens && tokens >= targetTokens)
@@ -223,15 +247,38 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         if (currentState != GameState.Playing) return;
+
         SaveHighScore();
         ChangeState(GameState.GameOver);
     }
 
+    private void SaveHighScore()
+    {
+        if (tokens > highScore)
+        {
+            highScore = tokens;
+            PlayerPrefs.SetInt("High Score", highScore);
+        }
+    }
+
+    public void ResetHighScore()
+    {
+        PlayerPrefs.DeleteKey("High Score");
+        highScore = 0;
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHighScoreText(highScore);
+        }
+
+        Debug.Log("High Score has been reset!");
+    }
+
     public void RestartGame()
     {
-        Time.timeScale = 1f; 
-        
+        Time.timeScale = 1f;
         currentState = GameState.Countdown;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -240,4 +287,5 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main Menu");
     }
-}
+}  
+
