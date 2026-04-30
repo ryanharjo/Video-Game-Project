@@ -14,23 +14,20 @@ public class UIManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject winPanel;
+    public GameObject countdownPanel;
 
     private void Awake()
     {
-        
         Instance = this;
+        HideAllPanels();
     }
 
     void Start()
-    {
-        HideAllPanels();
-
-        
+    {    
         if (GameManager.Instance != null)
         {
             UpdateTokenText(GameManager.Instance.tokens);
-            if (highScoreText != null)
-                highScoreText.text = "High Score: " + GameManager.Instance.highScore;
+            UpdateHighScoreText(GameManager.Instance.highScore);
         }
     }
 
@@ -54,25 +51,22 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHighScoreText(int score)
     {
-        if (highScoreText != null)
-            highScoreText.text = "High Score: " + score;
+        if (highScoreText != null) highScoreText.text = "High Score: " + score;
     }
 
     // ----------------- TOKENS -----------------
     public void UpdateTokenText(int tokens)
     {
-        if (tokenText != null)
-            tokenText.text = $"Tokens: {tokens}";
+        if (tokenText != null) tokenText.text = $"Tokens: {tokens}";
     }
 
     // ----------------- COUNTDOWN -----------------
-    public void ShowCountdownUI() => countdownText?.gameObject.SetActive(true);
-    public void HideCountdownUI() => countdownText?.gameObject.SetActive(false);
+    public void ShowCountdownUI() => countdownPanel?.gameObject.SetActive(true);
+    public void HideCountdownUI() => countdownPanel?.gameObject.SetActive(false);
 
     public void UpdateCountdownText(string value)
     {
-        if (countdownText != null)
-            countdownText.text = value;
+        if (countdownText != null) countdownText.text = value;
     }
 
     // ----------------- PANEL CONTROLS -----------------
