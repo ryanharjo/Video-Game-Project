@@ -1286,6 +1286,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc998ee2d6f20a14b9f285ee9af1cb55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!114 &1777883183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2569180004158721274, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+  m_PrefabInstance: {fileID: 2119421017582051946}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1885039967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,6 +1661,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 111
       objectReference: {fileID: 0}
+    - target: {fileID: 2462015597552922282, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -264
+      objectReference: {fileID: 0}
     - target: {fileID: 2504970991849368856, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1729,6 +1744,22 @@ PrefabInstance:
     - target: {fileID: 2504970991849368856, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569180004158721274, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569180004158721274, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_margin.y
+      value: -47.672108
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569180004158721274, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_margin.z
+      value: -469.52567
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569180004158721274, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 2697066338961427998, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1842,6 +1873,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 389
       objectReference: {fileID: 0}
+    - target: {fileID: 6477882033091965588, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7789009557289787105, guid: d7d8d68e037c8624b818b8a6f84a5728, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1892,6 +1927,10 @@ PrefabInstance:
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 879433735}
+    - target: {fileID: 3579012599357111100, guid: 867b5c5eafb538d459dc2680e3f24c9b, type: 3}
+      propertyPath: currentState
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6717609636906708945, guid: 867b5c5eafb538d459dc2680e3f24c9b, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -2022,6 +2061,10 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 1497604724}
+    - target: {fileID: 6717791716456427348, guid: f5772f45344d53544a2774e319bbcc58, type: 3}
+      propertyPath: countdownText
+      value: 
+      objectReference: {fileID: 1777883183}
     - target: {fileID: 6717791716456427348, guid: f5772f45344d53544a2774e319bbcc58, type: 3}
       propertyPath: gameOverPanel
       value: 
