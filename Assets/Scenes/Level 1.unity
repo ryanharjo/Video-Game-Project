@@ -1323,14 +1323,14 @@ RectTransform:
   m_GameObject: {fileID: 1811926952}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.2503, y: 1.3753, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 988335746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 88}
+  m_AnchoredPosition: {x: 151, y: 88}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1811926954
@@ -1353,7 +1353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0dfc11c6ce6a38249a45f6f7fe8a375d, type: 2}
   m_sharedMaterial: {fileID: 1610603750151710784, guid: 0dfc11c6ce6a38249a45f6f7fe8a375d, type: 2}
@@ -1380,10 +1380,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1419,7 +1419,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -64.52873, w: 0}
+  m_margin: {x: 0, y: 0, z: 111.70716, w: -139.78267}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1687,6 +1687,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1413780192}
+    - target: {fileID: 9069278256167142714, guid: c36c904daf274644d9e28e704b67656d, type: 3}
+      propertyPath: finishLinePrefab
+      value: 
+      objectReference: {fileID: 2208969393109749492, guid: 41e3308868e256f47a1076764c0ffe21, type: 3}
     - target: {fileID: 9069278256167142714, guid: c36c904daf274644d9e28e704b67656d, type: 3}
       propertyPath: groundTilePrefab
       value: 

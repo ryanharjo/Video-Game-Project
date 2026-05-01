@@ -61,8 +61,27 @@ public class UIManager : MonoBehaviour
     }
 
     // ----------------- COUNTDOWN -----------------
-    public void ShowCountdownUI() => countdownPanel?.gameObject.SetActive(true);
-    public void HideCountdownUI() => countdownPanel?.gameObject.SetActive(false);
+    public void ShowCountdownUI()
+    {
+        if (countdownPanel != null)
+        {
+            countdownPanel.SetActive(true);
+        }
+
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(true);
+        }
+           
+    }
+
+    public void HideCountdownUI()
+    {
+        if (countdownPanel != null)
+        {
+            countdownPanel.SetActive(false);
+        }
+    }
 
     public void UpdateCountdownText(string value)
     {

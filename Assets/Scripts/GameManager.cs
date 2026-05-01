@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Countdown:
 
-                Time.timeScale = 1f;
+                Time.timeScale = 0f;
 
                 if (countdownCoroutine != null)
                 {
