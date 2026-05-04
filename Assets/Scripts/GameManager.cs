@@ -181,8 +181,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.GameOver:
 
-                Time.timeScale = 0f;
-                UIManager.Instance.ShowGameOverUI();
+                StartCoroutine(GameOverRoutine());
                 break;
 
             case GameState.LevelComplete:
@@ -191,6 +190,15 @@ public class GameManager : MonoBehaviour
                 UIManager.Instance.ShowWinUI();
                 break;
         }
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        Debug.Log("Game Over");
+
+        yield return new WaitForSeconds(1.5f); // let animation play
+
+        Time.timeScale = 0f;
     }
 
     private IEnumerator StartCountdown()

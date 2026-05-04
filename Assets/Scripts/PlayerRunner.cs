@@ -33,6 +33,7 @@ public class PlayerRunner : MonoBehaviour
     private Vector3 velocity;
     private int currentLane = 1;
     private bool canSwitchLane = true;
+    private bool isDead = false;
 
     void Awake()
     {
@@ -68,6 +69,14 @@ public class PlayerRunner : MonoBehaviour
         }
 
         HandleMovement();
+    }
+
+    void Update()
+    {
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver && !isDead)
+        {
+            Die();
+        }
     }
 
     void HandleInput()
@@ -164,6 +173,12 @@ public class PlayerRunner : MonoBehaviour
         {
             TriggerDeath();
         }
+    }
+
+    void Die()
+    {
+        isDead = true;
+        animator.SetTrigger("Die");
     }
 
     void TriggerDeath()
