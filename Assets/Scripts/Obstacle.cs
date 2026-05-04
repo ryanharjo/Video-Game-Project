@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    private bool canKill = false; 
-
-    PlayerRunner playerRunner;
+    private bool canKill = false;
+    private bool hasHit = false;
 
     private void Start()
     {
-        playerRunner = GameObject.FindFirstObjectByType<PlayerRunner>();
-        Invoke(nameof(EnableKill), 0.5f); 
+        Invoke(nameof(EnableKill), 0.5f);
     }
 
     void EnableKill()
@@ -27,13 +25,15 @@ public class Obstacle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!canKill) return;
+        if (!canKill || hasHit) return;
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Game Over!");
+            hasHit = true;
 
-            GameManager.Instance.GameOver();
+            Debug.Log("Player Hit!");
+
+            GameManager.Instance.TakeDamage(GameManager.Instance.obstacleDamage);
         }
     }
 }

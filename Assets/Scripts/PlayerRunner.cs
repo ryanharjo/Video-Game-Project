@@ -62,6 +62,11 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver && !isDead)
+        {
+            Die();
+        }
+
         if (!isFinished)
         {
             HandleInput();
@@ -69,14 +74,6 @@ public class PlayerRunner : MonoBehaviour
         }
 
         HandleMovement();
-    }
-
-    void Update()
-    {
-        if (GameManager.Instance.currentState == GameManager.GameState.GameOver && !isDead)
-        {
-            Die();
-        }
     }
 
     void HandleInput()

@@ -25,6 +25,12 @@ public class GameManager : MonoBehaviour
     public int highScore = 0;
     public int targetTokens = 50;
 
+    [Header("Health")]
+    public int maxHealth = 100;
+    public int currentHealth;
+    public int tokenHealAmount = 10;
+    public int obstacleDamage = 25;
+
     [Header("Countdown Settings")]
     public float countdownTime = 3f;
 
@@ -96,6 +102,19 @@ public class GameManager : MonoBehaviour
         InitializeLevel();
     }
 
+    public void TakeDamage(int damage)
+    {
+        if (currentState != GameState.Playing) return;
+
+        currentHealth -= damage;
+        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
+
+        if (currentHealth <= 0)
+        {
+            GameOver();
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         highScore = PlayerPrefs.GetInt("High Score", 0);
@@ -130,9 +149,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         tokens = 0;
-
+        currentHealth = maxHealth;
         UIManager.Instance?.UpdateTokenText(tokens);
         UIManager.Instance?.UpdateHighScoreText(highScore);
+        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
 
         ChangeState(GameState.Countdown);
     }
@@ -236,9 +256,9 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.Playing) return;
 
         tokens += amount;
-
+        currentHealth = Mathf.Min(currentHealth + tokenHealAmount, maxHealth);
         UIManager.Instance?.UpdateTokenText(tokens);
-
+        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
         if (tokens > highScore)
         {
             highScore = tokens;

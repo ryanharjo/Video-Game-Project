@@ -1,9 +1,13 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    [Header("Health UI")]
+    public Slider healthBar;
 
     [Header("Gameplay UI")]
     public TextMeshProUGUI tokenText;
@@ -20,6 +24,14 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         HideAllPanels();
+    }
+
+    public void UpdateHealthBar(int current, int max)
+    {
+        if (healthBar == null) return;
+
+        healthBar.maxValue = max;
+        healthBar.value = current;
     }
 
     void Start()
