@@ -809,6 +809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c49bbb772ddb248873cb66e5586fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Obstacle
+  activationDelay: 0.5
 --- !u!1 &3405392584178936970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +1972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c49bbb772ddb248873cb66e5586fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Obstacle
+  activationDelay: 0.5
 --- !u!1 &8105634333360081785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1982,6 +1984,7 @@ GameObject:
   - component: {fileID: 1872847347898235292}
   - component: {fileID: 5976589264705201490}
   - component: {fileID: 576543227168169653}
+  - component: {fileID: 1114790630880989091}
   m_Layer: 0
   m_Name: Obstacle V.1
   m_TagString: Obstacle
@@ -2048,6 +2051,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c49bbb772ddb248873cb66e5586fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Obstacle
+  activationDelay: 0.1
+--- !u!54 &1114790630880989091
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8105634333360081785}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8768659892223583527
 GameObject:
   m_ObjectHideFlags: 0

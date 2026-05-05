@@ -25,11 +25,8 @@ public class GameManager : MonoBehaviour
     public int highScore = 0;
     public int targetTokens = 50;
 
-    [Header("Health")]
-    public int maxHealth = 100;
-    public int currentHealth;
-    public int tokenHealAmount = 10;
-    public int obstacleDamage = 25;
+    public float surviveDuration = 60f;
+    private float timer;
 
     [Header("Countdown Settings")]
     public float countdownTime = 3f;
@@ -49,6 +46,19 @@ public class GameManager : MonoBehaviour
 
     [Header("Win Condition")]
     public WinCondition winCondition;
+
+    private void Update()
+    {
+        if (currentState == GameState.Playing && winCondition == WinCondition.SurviveTime)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= surviveDuration)
+            {
+                ChangeState(GameState.LevelComplete);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -102,28 +112,19 @@ public class GameManager : MonoBehaviour
         InitializeLevel();
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (currentState != GameState.Playing) return;
-
-        currentHealth -= damage;
-        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
-
-        if (currentHealth <= 0)
-        {
-            GameOver();
-        }
-    }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        highScore = PlayerPrefs.GetInt("High Score", 0);
+        StartCoroutine(DelayedInitialize());
+    }
 
-        if (UIManager.Instance == null)
+    private IEnumerator DelayedInitialize()
+    {
+        while (UIManager.Instance == null)
         {
-            Debug.Log("Waiting for UIManager...");
+            yield return null;
         }
 
+        highScore = PlayerPrefs.GetInt("High Score", 0);
         InitializeLevel();
     }
 
@@ -148,11 +149,10 @@ public class GameManager : MonoBehaviour
     private void InitializeLevel()
     {
         Time.timeScale = 1f;
-        tokens = 0;
-        currentHealth = maxHealth;
+        tokens = 0;        
         UIManager.Instance?.UpdateTokenText(tokens);
         UIManager.Instance?.UpdateHighScoreText(highScore);
-        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
+       
 
         ChangeState(GameState.Countdown);
     }
@@ -215,10 +215,9 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverRoutine()
     {
         Debug.Log("Game Over");
-
-        yield return new WaitForSeconds(1.5f); // let animation play
-
+        yield return new WaitForSeconds(1.5f);
         Time.timeScale = 0f;
+        UIManager.Instance?.ShowGameOverUI();
     }
 
     private IEnumerator StartCountdown()
@@ -256,9 +255,7 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.Playing) return;
 
         tokens += amount;
-        currentHealth = Mathf.Min(currentHealth + tokenHealAmount, maxHealth);
         UIManager.Instance?.UpdateTokenText(tokens);
-        UIManager.Instance?.UpdateHealthBar(currentHealth, maxHealth);
         if (tokens > highScore)
         {
             highScore = tokens;
@@ -305,8 +302,10 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        currentState = GameState.Countdown;
-
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
