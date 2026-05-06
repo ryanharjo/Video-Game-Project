@@ -15,6 +15,8 @@ public class PlayerRunner : MonoBehaviour
     public float jumpForce = 5.5f;
     public float gravity = -32f;
     public float fallMultiplier = 1.5f;
+    private float jumpBufferTime = 0.15f;
+    private float jumpBufferCounter;
 
     [Header("UI & Finish Settings")]
     public GameObject levelCompletePanel;
@@ -62,18 +64,17 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.currentState == GameManager.GameState.GameOver && !isDead)
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver)
         {
-            Die();
+            return;
         }
 
         if (!isFinished)
         {
             HandleInput();
             UpdateAnimator();
+            HandleMovement();
         }
-
-        HandleMovement();
     }
 
     void HandleInput()
@@ -88,7 +89,7 @@ public class PlayerRunner : MonoBehaviour
         {
             if (input.x > 0.5f && currentLane < 2)
             {
-                currentLane++;
+                currentLane = Mathf.Clamp(currentLane + (input.x > 0.5f ? 1 : input.x < -0.5f ? -1 : 0), 0, 2);
                 StartCoroutine(LaneSwitchCooldown());
             }
             else if (input.x < -0.5f && currentLane > 0)
@@ -111,31 +112,35 @@ public class PlayerRunner : MonoBehaviour
         float targetX = (currentLane - 1) * laneDistance;
         Vector3 currentPosition = transform.position;
 
-        float newX = Mathf.MoveTowards(
-            currentPosition.x,
-            targetX,
-            laneSwitchSpeed * Time.deltaTime
-        );
+        float newX = Mathf.MoveTowards(currentPosition.x, targetX, laneSwitchSpeed * Time.deltaTime);
 
         float xDelta = newX - currentPosition.x;
 
         // Gravity
-        velocity.y += gravity * Time.deltaTime;
-
-        if (velocity.y < 0)
-            velocity.y += gravity * (fallMultiplier - 1) * Time.deltaTime;
+        if (velocity.y < 0) 
+        {
+            velocity.y += gravity * fallMultiplier * Time.deltaTime;
+        }
+        else if (velocity.y > 0 && !jumpAction.IsPressed())
+        {
+            velocity.y += gravity * (fallMultiplier * 0.5f) * Time.deltaTime;
+        }
+        else 
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
 
         bool jumpPressed = jumpAction.triggered || mobileJumpInput;
 
-        if (controller.isGrounded)
+        if (controller.isGrounded && jumpBufferCounter > 0 && !isFinished)
         {
             if (velocity.y < 0)
-                velocity.y = -2f;
+                velocity.y = -1f;
 
             if (jumpPressed && !isFinished)
             {
-                velocity.y = jumpForce;
-
+                velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+                jumpBufferCounter = 0;
                 if (animator != null)
                     animator.SetTrigger("Jump");
 
@@ -143,15 +148,23 @@ public class PlayerRunner : MonoBehaviour
             }
         }
 
-        float currentForwardMove = isFinished
-            ? 0f
-            : forwardSpeed * Time.deltaTime;
+        if (isFinished)
+        {
+            velocity.y = 0;
+        }
 
-        Vector3 moveVector = new Vector3(
-            xDelta,
-            velocity.y,
-            currentForwardMove
-        );
+        if (jumpAction.triggered)
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        float currentForwardMove = isFinished? 0f: forwardSpeed * Time.deltaTime;
+
+        Vector3 moveVector = new Vector3(xDelta, velocity.y, currentForwardMove);
 
         controller.Move(moveVector);
     }
@@ -168,14 +181,26 @@ public class PlayerRunner : MonoBehaviour
     {
         if (hit.gameObject.CompareTag("Obstacle") && !isFinished)
         {
-            TriggerDeath();
+            Die();
         }
     }
 
     void Die()
     {
+        if (isDead) return;
+
         isDead = true;
-        animator.SetTrigger("Die");
+        isFinished = true;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+            animator.SetBool("IsRunning", false);
+        }
+
+        velocity = Vector3.zero;
+
+        GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
     }
 
     void TriggerDeath()
