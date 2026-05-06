@@ -942,7 +942,7 @@ PrefabInstance:
       objectReference: {fileID: 7459353943220759580, guid: 40c77fc4b766ba9459decfbfac83af54, type: 3}
     - target: {fileID: 51448068224366950, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: m_Name
-      value: GroundTile Variant 1
+      value: GroundTile Variant 3
       objectReference: {fileID: 0}
     - target: {fileID: 212783771345799856, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: m_Name
