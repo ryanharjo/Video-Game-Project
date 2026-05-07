@@ -12,9 +12,9 @@ public class PlayerRunner : MonoBehaviour
     private bool isFinished = false;
 
     [Header("Jump Settings")]
-    public float jumpForce = 5.5f;
+    public float jumpForce = 1.8f;
     public float gravity = -32f;
-    public float fallMultiplier = 1.5f;
+    public float fallMultiplier = 2f;
     private float jumpBufferTime = 0.15f;
     private float jumpBufferCounter;
 
