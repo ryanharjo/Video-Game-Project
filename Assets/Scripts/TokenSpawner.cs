@@ -10,7 +10,7 @@ public class TokenSpawner : MonoBehaviour
     public Transform player;
 
     public float spawnDistance = 30f; 
-    public float spawnRate = 5f;    
+    public float spawnRate = 35f;    
     public float spawnY = 1f;
 
     private float lastSpawnZ = 0f;
