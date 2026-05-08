@@ -2,25 +2,20 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    [Header("Settings")]
+    public float activationDelay = 0.5f; // time before obstacle can kill
+
     private bool canKill = false;
     private bool hasHit = false;
 
     private void Start()
     {
-        Invoke(nameof(EnableKill), 0.5f);
+        Invoke(nameof(EnableKill), activationDelay);
     }
 
-    void EnableKill()
+    private void EnableKill()
     {
         canKill = true;
-    }
-
-    void Update()
-    {
-        if (transform.position.z < -10)
-        {
-            Destroy(gameObject);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,9 +26,7 @@ public class Obstacle : MonoBehaviour
         {
             hasHit = true;
 
-            Debug.Log("Player Hit!");
-
-            GameManager.Instance.TakeDamage(GameManager.Instance.obstacleDamage);
+            GameManager.Instance.GameOver();
         }
     }
 }

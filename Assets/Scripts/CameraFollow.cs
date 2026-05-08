@@ -3,8 +3,8 @@
 public class CameraFollow : MonoBehaviour
 {
     public Transform player;
-    public Vector3 offset = new Vector3(0, 5, -7); // Adjust for height and distance
-    public float laneSmoothTime = 0.1f;            // Faster response for lane switches
+    public Vector3 offset = new Vector3(0, 5, -8); // Adjust for height and distance
+    public float laneSmoothTime = 0.08f;            // Faster response for lane switches
 
     private float xVelocity = 0.0f;
 
@@ -12,19 +12,21 @@ public class CameraFollow : MonoBehaviour
     {
         if (!player) return;
 
-        // 1. Determine the target position
-        // We take the player's current Z (forward) and Y (up), but handle X specially
-        Vector3 targetPos = player.position + offset;
+        // Keep camera from following jump height too aggressively
+        Vector3 targetPos = new Vector3(player.position.x, offset.y, player.position.z + offset.z);
 
-        // 2. Smoothly follow the lane change (X-axis) 
-        // This prevents the camera from "snapping" too hard when switching lanes
+        // Smooth lane switching
         float newX = Mathf.SmoothDamp(transform.position.x, targetPos.x, ref xVelocity, laneSmoothTime);
 
-        // 3. Apply the position
-        // Z is constant relative to the player to ensure the "Endless" feel
-        transform.position = new Vector3(newX, targetPos.y, targetPos.z);
+        // Smooth forward movement
+        float newZ = Mathf.Lerp(transform.position.z, targetPos.z, 5f * Time.deltaTime);
 
-        // 4. Always look slightly ahead of the player
-        transform.LookAt(player.position + Vector3.up * 1.5f);
+        // Smooth height
+        float newY = Mathf.Lerp(transform.position.y, targetPos.y, 3f * Time.deltaTime);
+
+        transform.position = new Vector3(newX, newY, newZ);
+
+        // Fixed viewing angle
+        transform.rotation = Quaternion.Euler(15f, 0f, 0f);
     }
 }
