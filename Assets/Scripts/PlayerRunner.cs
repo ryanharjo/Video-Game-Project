@@ -11,27 +11,16 @@ public class PlayerRunner : MonoBehaviour
     public float laneSwitchSpeed = 15f;
     private bool isFinished = false;
 
-    [Header("Jump Settings")]
-    public float jumpForce = 1.8f;
-    public float gravity = -32f;
-    public float fallMultiplier = 2f;
-    private float jumpBufferTime = 0.15f;
-    private float jumpBufferCounter;
-
     [Header("UI & Finish Settings")]
     public GameObject levelCompletePanel;
     public float uiDelay = 2.0f;
-
-
 
     private CharacterController controller;
     private Animator animator;
     private PlayerInput playerInput;
     private InputAction moveAction;
-    private InputAction jumpAction;
 
     private Vector2 mobileMoveInput;
-    private bool mobileJumpInput;
     private Vector3 velocity;
     private int currentLane = 1;
     private bool canSwitchLane = true;
@@ -44,30 +33,17 @@ public class PlayerRunner : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
 
         moveAction = playerInput.actions["Move"];
-        jumpAction = playerInput.actions["Jump"];
 
         if (levelCompletePanel != null)
             levelCompletePanel.SetActive(false);
     }
 
-    void OnEnable()
-    {
-        moveAction.Enable();
-        jumpAction.Enable();
-    }
-
-    void OnDisable()
-    {
-        moveAction.Disable();
-        jumpAction.Disable();
-    }
+    void OnEnable() => moveAction.Enable();
+    void OnDisable() => moveAction.Disable();
 
     void Update()
     {
-        if (GameManager.Instance.currentState == GameManager.GameState.GameOver)
-        {
-            return;
-        }
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver) return;
 
         if (!isFinished)
         {
@@ -81,7 +57,6 @@ public class PlayerRunner : MonoBehaviour
     {
         Vector2 input = moveAction.ReadValue<Vector2>();
 
-        // Mobile input override
         if (mobileMoveInput != Vector2.zero)
             input = mobileMoveInput;
 
@@ -89,7 +64,7 @@ public class PlayerRunner : MonoBehaviour
         {
             if (input.x > 0.5f && currentLane < 2)
             {
-                currentLane = Mathf.Clamp(currentLane + (input.x > 0.5f ? 1 : input.x < -0.5f ? -1 : 0), 0, 2);
+                currentLane++;
                 StartCoroutine(LaneSwitchCooldown());
             }
             else if (input.x < -0.5f && currentLane > 0)
@@ -109,130 +84,59 @@ public class PlayerRunner : MonoBehaviour
 
     void HandleMovement()
     {
+        // Calculate Horizontal Movement (Lanes)
         float targetX = (currentLane - 1) * laneDistance;
-        Vector3 currentPosition = transform.position;
+        float newX = Mathf.MoveTowards(transform.position.x, targetX, laneSwitchSpeed * Time.deltaTime);
+        float xDelta = newX - transform.position.x;
 
-        float newX = Mathf.MoveTowards(currentPosition.x, targetX, laneSwitchSpeed * Time.deltaTime);
-
-        float xDelta = newX - currentPosition.x;
-
-        // Gravity
-        if (velocity.y < 0) 
-        {
-            velocity.y += gravity * fallMultiplier * Time.deltaTime;
-        }
-        else if (velocity.y > 0 && !jumpAction.IsPressed())
-        {
-            velocity.y += gravity * (fallMultiplier * 0.5f) * Time.deltaTime;
-        }
-        else 
-        {
-            velocity.y += gravity * Time.deltaTime;
-        }
-
-        bool jumpPressed = jumpAction.triggered || mobileJumpInput;
-
-        if (controller.isGrounded && jumpBufferCounter > 0 && !isFinished)
-        {
-            if (velocity.y < 0)
-                velocity.y = -1f;
-
-            if (jumpPressed && !isFinished)
-            {
-                velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-                jumpBufferCounter = 0;
-                if (animator != null)
-                    animator.SetTrigger("Jump");
-
-                mobileJumpInput = false;
-            }
-        }
-
-        if (isFinished)
-        {
-            velocity.y = 0;
-        }
-
-        if (jumpAction.triggered)
-        {
-            jumpBufferCounter = jumpBufferTime;
-        }
+        // Apply a constant small downward force to stay grounded
+        if (controller.isGrounded)
+            velocity.y = -1f;
         else
-        {
-            jumpBufferCounter -= Time.deltaTime;
-        }
+            velocity.y += -9.81f * Time.deltaTime; // Simple gravity in case they fall off an edge
 
-        float currentForwardMove = isFinished? 0f: forwardSpeed * Time.deltaTime;
+        // Calculate Forward Movement
+        float currentForwardMove = isFinished ? 0f : forwardSpeed * Time.deltaTime;
 
-        Vector3 moveVector = new Vector3(xDelta, velocity.y, currentForwardMove);
+        // Combine into Move Vector
+        Vector3 moveVector = new Vector3(xDelta, velocity.y * Time.deltaTime, currentForwardMove);
 
         controller.Move(moveVector);
     }
 
+    // --- Collision & UI Logic (Unchanged) ---
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("FinishLine") && !isFinished)
-        {
             StartCoroutine(CompleteLevelRoutine());
-        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.gameObject.CompareTag("Obstacle") && !isFinished)
-        {
             Die();
-        }
     }
 
     void Die()
     {
         if (isDead) return;
-
         isDead = true;
         isFinished = true;
-
         if (animator != null)
         {
             animator.SetTrigger("Die");
             animator.SetBool("IsRunning", false);
         }
-
-        velocity = Vector3.zero;
-
         GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
-    }
-
-    void TriggerDeath()
-    {
-        isFinished = true;
-
-        if (animator != null)
-        {
-            animator.SetTrigger("Die");
-            animator.SetBool("IsRunning", false);
-        }
-
-        velocity = Vector3.zero;
-
-        Debug.Log("Game Over!");
     }
 
     IEnumerator CompleteLevelRoutine()
     {
         isFinished = true;
-
-        if (animator != null)
-        {
-            animator.SetBool("IsRunning", false);
-        }
-
+        if (animator != null) animator.SetBool("IsRunning", false);
         yield return new WaitForSeconds(uiDelay);
-
-        if (levelCompletePanel != null)
-        {
-            levelCompletePanel.SetActive(true);
-        }
+        if (levelCompletePanel != null) levelCompletePanel.SetActive(true);
     }
 
     void UpdateAnimator()
@@ -244,13 +148,5 @@ public class PlayerRunner : MonoBehaviour
         }
     }
 
-    public void MoveInput(Vector2 value)
-    {
-        mobileMoveInput = value;
-    }
-
-    public void JumpInput(bool value)
-    {
-        mobileJumpInput = value;
-    }
+    public void MoveInput(Vector2 value) => mobileMoveInput = value;
 }
