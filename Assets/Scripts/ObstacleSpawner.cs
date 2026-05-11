@@ -25,8 +25,7 @@ public class ObstacleSpawner : MonoBehaviour
             int pointIndex = Random.Range(0, spawnPoints.Length);
             int prefabIndex = Random.Range(0, obstaclePrefabs.Length);
 
-            Instantiate(
-                obstaclePrefabs[prefabIndex],
+            Instantiate(obstaclePrefabs[prefabIndex],
                 spawnPoints[pointIndex].position,
                 Quaternion.identity,
                 transform // Makes it a child of the spawner/tile

@@ -9,6 +9,10 @@ public class PlayerRunner : MonoBehaviour
     public float forwardSpeed = 10f;
     public float laneDistance = 3f;
     public float laneSwitchSpeed = 15f;
+
+    [Header("Jumping")]
+    public float jumpForce = 8f;
+    public float gravity = -20f;
     private bool isFinished = false;
 
     [Header("UI & Finish Settings")]
@@ -19,6 +23,7 @@ public class PlayerRunner : MonoBehaviour
     private Animator animator;
     private PlayerInput playerInput;
     private InputAction moveAction;
+    private InputAction jumpAction;
 
     private Vector2 mobileMoveInput;
     private Vector3 velocity;
@@ -33,13 +38,24 @@ public class PlayerRunner : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
 
         moveAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
 
         if (levelCompletePanel != null)
             levelCompletePanel.SetActive(false);
     }
 
-    void OnEnable() => moveAction.Enable();
-    void OnDisable() => moveAction.Disable();
+    void OnEnable()
+    {
+        moveAction.Enable();
+        jumpAction.Enable();
+    }
+    
+    void OnDisable()
+    {
+        moveAction.Disable();
+        jumpAction.Disable();
+    }
+
 
     void Update()
     {
@@ -73,14 +89,24 @@ public class PlayerRunner : MonoBehaviour
                 StartCoroutine(LaneSwitchCooldown());
             }
         }
+
+        if (jumpAction.triggered && controller.isGrounded)
+        {
+            velocity.y = jumpForce;
+
+            if (animator != null)
+            {
+                animator.SetTrigger("Jump");
+            }
+        }
     }
 
-    IEnumerator LaneSwitchCooldown()
-    {
-        canSwitchLane = false;
-        yield return new WaitForSeconds(0.2f);
-        canSwitchLane = true;
-    }
+        IEnumerator LaneSwitchCooldown()
+        {
+           canSwitchLane = false;
+           yield return new WaitForSeconds(0.2f);
+           canSwitchLane = true;
+        }
 
     void HandleMovement()
     {
@@ -90,10 +116,16 @@ public class PlayerRunner : MonoBehaviour
         float xDelta = newX - transform.position.x;
 
         // Apply a constant small downward force to stay grounded
-        if (controller.isGrounded)
-            velocity.y = -1f;
+        if (controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
         else
-            velocity.y += -9.81f * Time.deltaTime; // Simple gravity in case they fall off an edge
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
+      
 
         // Calculate Forward Movement
         float currentForwardMove = isFinished ? 0f : forwardSpeed * Time.deltaTime;
@@ -144,7 +176,8 @@ public class PlayerRunner : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("IsRunning", !isFinished);
-            animator.SetBool("IsGrounded", controller.isGrounded);
+            bool grounded = controller.isGrounded;
+            animator.SetBool("IsGrounded", grounded);
         }
     }
 
