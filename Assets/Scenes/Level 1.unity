@@ -816,6 +816,8 @@ MonoBehaviour:
   forwardSpeed: 25
   laneDistance: 3
   laneSwitchSpeed: 15
+  jumpForce: 8
+  gravity: -20
   levelCompletePanel: {fileID: 2119421017582051947}
   uiDelay: 2
 --- !u!143 &1413780189
@@ -1565,7 +1567,7 @@ PrefabInstance:
     - target: {fileID: 9069278256167142714, guid: c36c904daf274644d9e28e704b67656d, type: 3}
       propertyPath: groundTilePrefab
       value: 
-      objectReference: {fileID: 51448068224366950, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
+      objectReference: {fileID: 6128120716343581853, guid: 804fcd138bf820d4790f650fb15e6a93, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
