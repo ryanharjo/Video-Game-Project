@@ -43,7 +43,7 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.currentState == GameManager.GameState.GameOver) return;
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver) 
 
         if (!isFinished)
         {
