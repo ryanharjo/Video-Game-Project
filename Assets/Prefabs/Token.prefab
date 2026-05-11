@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   collectSound: {fileID: 8300000, guid: cd6ca7164018f9343a76087f82d29eb0, type: 3}
+  collectEffect: {fileID: 7516004826788876440, guid: fe8624b8239b6d44e8dba978b745de2a, type: 3}
   tokenValue: 10
 --- !u!82 &8933567445579776830
 AudioSource:

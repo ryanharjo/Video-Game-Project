@@ -26,6 +26,7 @@ public class PlayerRunner : MonoBehaviour
     private InputAction jumpAction;
 
     private Vector2 mobileMoveInput;
+    private bool mobileJumpInput;
     private Vector3 velocity;
     private int currentLane = 1;
     private bool canSwitchLane = true;
@@ -49,7 +50,7 @@ public class PlayerRunner : MonoBehaviour
         moveAction.Enable();
         jumpAction.Enable();
     }
-    
+
     void OnDisable()
     {
         moveAction.Disable();
@@ -59,14 +60,14 @@ public class PlayerRunner : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.currentState == GameManager.GameState.GameOver) 
+        if (GameManager.Instance.currentState == GameManager.GameState.GameOver) return;
 
-        if (!isFinished)
-        {
-            HandleInput();
-            UpdateAnimator();
-            HandleMovement();
-        }
+            if (!isFinished)
+            {
+                HandleInput();
+                UpdateAnimator();
+                HandleMovement();
+            }
     }
 
     void HandleInput()
@@ -90,7 +91,7 @@ public class PlayerRunner : MonoBehaviour
             }
         }
 
-        if (jumpAction.triggered && controller.isGrounded)
+        if (jumpAction.triggered || mobileJumpInput && controller.isGrounded)
         {
             velocity.y = jumpForce;
 
@@ -98,15 +99,17 @@ public class PlayerRunner : MonoBehaviour
             {
                 animator.SetTrigger("Jump");
             }
+
+            mobileJumpInput = false;
         }
     }
 
-        IEnumerator LaneSwitchCooldown()
-        {
-           canSwitchLane = false;
-           yield return new WaitForSeconds(0.2f);
-           canSwitchLane = true;
-        }
+    IEnumerator LaneSwitchCooldown()
+    {
+        canSwitchLane = false;
+        yield return new WaitForSeconds(0.2f);
+        canSwitchLane = true;
+    }
 
     void HandleMovement()
     {
@@ -125,7 +128,7 @@ public class PlayerRunner : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
         }
 
-      
+
 
         // Calculate Forward Movement
         float currentForwardMove = isFinished ? 0f : forwardSpeed * Time.deltaTime;
@@ -181,5 +184,15 @@ public class PlayerRunner : MonoBehaviour
         }
     }
 
-    public void MoveInput(Vector2 value) => mobileMoveInput = value;
+    public void MoveInput(Vector2 value)
+    {
+        mobileMoveInput = value;
+    }
+
+    public void JumpInput(bool value)
+    {
+        mobileJumpInput = value;
+    }
+
+
 }

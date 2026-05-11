@@ -3,6 +3,7 @@ using UnityEngine;
 public class TokenPickup : MonoBehaviour
 {
     public AudioClip collectSound;
+    public GameObject collectEffect;
     public int tokenValue = 10;
 
     private AudioSource audioSource;
@@ -20,26 +21,30 @@ public class TokenPickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Collect();
-        }
-    }
+            // 1. Spawn the particles at the token's position
+            if (collectEffect != null)
+            {
+                Instantiate(collectEffect, transform.position, Quaternion.identity);
+            }
 
-    void Collect()
-    {
-        if (audioSource != null && collectSound != null)
-        {
-            // The pitch variance you added is great for rows of tokens!
-            audioSource.pitch = Random.Range(0.9f, 1.1f);
-            audioSource.PlayOneShot(collectSound);
-        }
+            // 2. Play Audio
+            if (audioSource != null && collectSound != null)
+            {
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(collectSound);
+            }
 
-        // Check if GameManager exists before calling it to prevent console errors
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.AddToken(tokenValue);
-        }
+            // 3. Update UI/Manager
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.AddToken(tokenValue);
+            }
 
-        // Destroy the token immediately
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 }
+
+
+
+
