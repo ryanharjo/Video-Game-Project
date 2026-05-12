@@ -131,11 +131,15 @@ public class GameManager : MonoBehaviour
 
     private void OnPausePressed(InputAction.CallbackContext context)
     {
-        TogglePause();
+        if (context.performed)
+        {
+            TogglePause();
+        }
     }
 
     private void TogglePause()
     {
+        Debug.Log("Current State: " + currentState);
         // Only allow pause during gameplay
         if (currentState == GameState.Playing)
         {
@@ -192,14 +196,32 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
 
                 Time.timeScale = 1f;
-                UIManager.Instance.HideCountdownUI();
-                UIManager.Instance.HidePauseUI();
-                break;
+
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.HideCountdownUI();
+                    UIManager.Instance.HidePauseUI();
+
+                    // Force-hide the panel
+                    if (UIManager.Instance.pausePanel != null)
+                    {
+                        UIManager.Instance.pausePanel.SetActive(false);
+                    }
+                }
+                    break;
 
             case GameState.Paused:
 
                 Time.timeScale = 0f;
-                UIManager.Instance.ShowPauseUI();
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.ShowPauseUI();
+
+                    if (UIManager.Instance.pausePanel != null)
+                    {
+                        UIManager.Instance.pausePanel.SetActive(true);
+                    }
+                }
                 break;
 
             case GameState.GameOver:
@@ -270,9 +292,11 @@ public class GameManager : MonoBehaviour
         {
             finishSpawned = true;
 
-            FindObjectOfType<FinishlineSpawner>()?.SpawnFinishline();
+            Object.FindFirstObjectByType<FinishlineSpawner>()?.SpawnFinishline();
         }
     }
+
+    
 
     public void GameOver()
     {

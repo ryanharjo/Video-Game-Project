@@ -101,10 +101,27 @@ public class UIManager : MonoBehaviour
     }
 
     // ----------------- PANEL CONTROLS -----------------
-    public void ShowPauseUI() => pausePanel?.SetActive(true);
-    public void HidePauseUI() => pausePanel?.SetActive(false);
+    public void ShowPauseUI()
+    {
+        Debug.Log("SHOWING Pause UI");
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(true);
+        }
+    }
+    public void HidePauseUI()
+    {
+     
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+    }
 
     public void ShowGameOverUI() => gameOverPanel?.SetActive(true);
+
 
     public void ShowWinUI() => winPanel?.SetActive(true);
 }

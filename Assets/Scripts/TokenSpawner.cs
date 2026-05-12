@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class TokenSpawner : MonoBehaviour
 {
@@ -10,49 +11,55 @@ public class TokenSpawner : MonoBehaviour
     public float[] lanes = { -3f, 0f, 3f };
 
     [Header("Spawn Settings")]
-    public float spawnDistance = 5f;
+    public float spawnDistance = 60f;
     public float spawnRate = 4f;
     public float spawnY = 2f;
 
-    [Header("Start Delay")]
-    public float initialSpawnDelay = 3f;
-    private float timer;
-
-    [Header("Row Settings")]
+    [Header("Rows")]
     public int tokensPerRow = 5;
-    public float spacing = 3f;
+    public float spacingZ = 2f;
 
-    private float nextSpawnZ;
+    private bool spawning = true;
 
     void Start()
     {
-        nextSpawnZ = player.position.z + spawnDistance;
-
-        InvokeRepeating(nameof(SpawnTokenRow), initialSpawnDelay, spawnRate);
+        StartCoroutine(SpawnTokens());
     }
 
-    void SpawnTokenRow()
+    IEnumerator SpawnTokens()
     {
-        // Random starting lane
-        int randomLaneIndex = Random.Range(0, lanes.Length);
-        float laneX = lanes[randomLaneIndex];
-
-        // Spawn a row ahead of the player
-        float rowStartZ = nextSpawnZ;
-
-        for (int i = 0; i < tokensPerRow; i++)
+        while (spawning)
         {
-            // Optional lane switch halfway through row
-            if (i == tokensPerRow / 2)
-            {
-                laneX = lanes[Random.Range(0, lanes.Length)];
-            }
+            SpawnRow();
 
-            Vector3 spawnPos = new Vector3(laneX, spawnY, rowStartZ + (i * spacing));
-            Instantiate(tokenPrefab, spawnPos, Quaternion.identity);
+            yield return new WaitForSeconds(spawnRate);
         }
+    }
 
-        // Move next row farther ahead
-        nextSpawnZ += tokensPerRow * spacing + 30f;
+    void SpawnRow()
+    {
+        float rowZ = player.position.z + spawnDistance;
+
+        for (int lane = 0; lane < lanes.Length; lane++)
+        {
+            Vector3 spawnPos = new Vector3(
+                lanes[lane],
+                spawnY,
+                rowZ
+            );
+
+            // Check if obstacle already exists here
+            bool blocked = Physics.CheckSphere(spawnPos, 1f);
+
+            if (!blocked)
+            {
+                Instantiate(tokenPrefab, spawnPos, Quaternion.identity);
+            }
+        }
+    }
+
+    public void StopSpawning()
+    {
+        spawning = false;
     }
 }
