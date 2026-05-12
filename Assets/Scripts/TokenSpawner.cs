@@ -10,13 +10,17 @@ public class TokenSpawner : MonoBehaviour
     public float[] lanes = { -3f, 0f, 3f };
 
     [Header("Spawn Settings")]
-    public float spawnDistance = 30f;
-    public float spawnRate = 1.5f;
+    public float spawnDistance = 5f;
+    public float spawnRate = 4f;
     public float spawnY = 2f;
+
+    [Header("Start Delay")]
+    public float initialSpawnDelay = 3f;
+    private float timer;
 
     [Header("Row Settings")]
     public int tokensPerRow = 5;
-    public float spacing = 2.5f;
+    public float spacing = 3f;
 
     private float nextSpawnZ;
 
@@ -24,7 +28,7 @@ public class TokenSpawner : MonoBehaviour
     {
         nextSpawnZ = player.position.z + spawnDistance;
 
-        InvokeRepeating(nameof(SpawnTokenRow), 1f, spawnRate);
+        InvokeRepeating(nameof(SpawnTokenRow), initialSpawnDelay, spawnRate);
     }
 
     void SpawnTokenRow()
@@ -49,6 +53,6 @@ public class TokenSpawner : MonoBehaviour
         }
 
         // Move next row farther ahead
-        nextSpawnZ += tokensPerRow * spacing + 15f;
+        nextSpawnZ += tokensPerRow * spacing + 30f;
     }
 }

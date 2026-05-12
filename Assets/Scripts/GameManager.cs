@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     [Header("Input Settings")]
     [SerializeField] private InputActionAsset inputActions;
     private InputAction pauseAction;
-    private bool finishedSpawned = false;
+    private bool finishSpawned = false;
 
     private Coroutine countdownCoroutine;
 
@@ -150,7 +150,9 @@ public class GameManager : MonoBehaviour
     private void InitializeLevel()
     {
         Time.timeScale = 1f;
-        tokens = 0;        
+        tokens = 0;
+        finishSpawned = false;
+
         UIManager.Instance?.UpdateTokenText(tokens);
         UIManager.Instance?.UpdateHighScoreText(highScore);
        
@@ -264,13 +266,11 @@ public class GameManager : MonoBehaviour
             UIManager.Instance?.UpdateHighScoreText(highScore);
         }
 
-        if (winCondition == WinCondition.Tokens &&
-       tokens >= targetTokens &&
-       !finishSpawned)
+        if (winCondition == WinCondition.Tokens && tokens >= targetTokens && !finishSpawned)
         {
             finishSpawned = true;
 
-            FindObjectOfType<FinishLineSpawner>()?.SpawnFinishLine();
+            FindObjectOfType<FinishlineSpawner>()?.SpawnFinishline();
         }
     }
 

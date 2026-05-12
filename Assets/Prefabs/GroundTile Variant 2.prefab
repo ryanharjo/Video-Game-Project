@@ -3834,7 +3834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: spawnPoints.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
@@ -3843,14 +3843,14 @@ PrefabInstance:
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: 'spawnPoints.Array.data[1]'
       value: 
-      objectReference: {fileID: 7855083239121914212}
+      objectReference: {fileID: 5625155149037704088}
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: 'spawnPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 5625155149037704088}
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: obstaclePrefabs.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1661841614366498533, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
       propertyPath: 'obstaclePrefabs.Array.data[0]'
@@ -18333,11 +18333,6 @@ Transform:
 --- !u!4 &5625155149037704088 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1994287739694069347, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
-  m_PrefabInstance: {fileID: 6178290990784947707}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7855083239121914212 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4089108459428457631, guid: e4d7c414e71fac9488b8b6cef9f304bf, type: 3}
   m_PrefabInstance: {fileID: 6178290990784947707}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &9120314519024267113 stripped
