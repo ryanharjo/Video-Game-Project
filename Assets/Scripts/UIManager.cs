@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     {    
         if (GameManager.Instance != null)
         {
-            UpdateTokenText(GameManager.Instance.tokens);
+            UpdateTokenText(GameManager.Instance.tokens, GameManager.Instance.targetTokens);
             UpdateHighScoreText(GameManager.Instance.highScore);
         }
     }
@@ -67,9 +67,10 @@ public class UIManager : MonoBehaviour
     }
 
     // ----------------- TOKENS -----------------
-    public void UpdateTokenText(int tokens)
+    public void UpdateTokenText(int currentTokens, int targetTokens)
     {
-        if (tokenText != null) tokenText.text = $"Tokens: {tokens}";
+        if (tokenText != null)
+            tokenText.text = $"Tokens: {currentTokens} / {targetTokens}";
     }
 
     // ----------------- COUNTDOWN -----------------

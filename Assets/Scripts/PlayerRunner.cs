@@ -119,9 +119,12 @@ public class PlayerRunner : MonoBehaviour
         float xDelta = newX - transform.position.x;
 
         // Apply a constant small downward force to stay grounded
-        if (controller.isGrounded && velocity.y < 0)
+        if (controller.isGrounded)
         {
-            velocity.y = -2f;
+            if (velocity.y < 0)
+            {
+                velocity.y = -5f;
+            }
         }
         else
         {
@@ -193,6 +196,4 @@ public class PlayerRunner : MonoBehaviour
     {
         mobileJumpInput = value;
     }
-
-
 }

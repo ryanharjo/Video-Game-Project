@@ -85,6 +85,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetLevelState()
+    {
+        tokens = 0;
+        timer = 0f;
+        finishSpawned = false;
+    }
+
     private void OnEnable()
     {
         if (pauseAction != null)
@@ -151,15 +158,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SaveHighScore()
+    {
+        if (tokens > highScore)
+        {
+            highScore = tokens;
+            PlayerPrefs.SetInt("High Score", highScore);
+            PlayerPrefs.Save();
+        }
+    }
+
     private void InitializeLevel()
     {
         Time.timeScale = 1f;
-        tokens = 0;
-        finishSpawned = false;
-
-        UIManager.Instance?.UpdateTokenText(tokens);
+        ResetLevelState();
         UIManager.Instance?.UpdateHighScoreText(highScore);
-       
+        UIManager.Instance?.UpdateTokenText(tokens,targetTokens);
 
         ChangeState(GameState.Countdown);
     }
@@ -280,7 +294,7 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.Playing) return;
 
         tokens += amount;
-        UIManager.Instance?.UpdateTokenText(tokens);
+        UIManager.Instance?.UpdateTokenText(tokens, targetTokens);
         if (tokens > highScore)
         {
             highScore = tokens;
@@ -304,15 +318,6 @@ public class GameManager : MonoBehaviour
 
         SaveHighScore();
         ChangeState(GameState.GameOver);
-    }
-
-    private void SaveHighScore()
-    {
-        if (tokens > highScore)
-        {
-            highScore = tokens;
-            PlayerPrefs.SetInt("High Score", highScore);
-        }
     }
 
     public void ResetHighScore()

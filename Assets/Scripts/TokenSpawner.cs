@@ -38,15 +38,14 @@ public class TokenSpawner : MonoBehaviour
 
     void SpawnRow()
     {
-        float rowZ = player.position.z + spawnDistance;
-
-        for (int lane = 0; lane < lanes.Length; lane++)
+        float startZ = player.position.z + spawnDistance;
+        int randomLane = Random.Range(0, lanes.Length);
+        for (int i = 0; i < tokensPerRow; i++)
         {
-            Vector3 spawnPos = new Vector3(
-                lanes[lane],
-                spawnY,
-                rowZ
-            );
+            // Calculate Z position for each token in the row
+            float currentZ = startZ + (i * spacingZ);
+
+            Vector3 spawnPos = new Vector3(lanes[randomLane], spawnY, currentZ);
 
             // Check if obstacle already exists here
             bool blocked = Physics.CheckSphere(spawnPos, 1f);
