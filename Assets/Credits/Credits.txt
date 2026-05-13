@@ -1,2 +1,51 @@
+Game Credits & Development
+
+Project Developer: Ryan Harjo
+Role: Lead Programmer and Game Developer
+Contributions: Created custom gameplay mechanics, scene layout, and UI system.
+
+
+Main Menu Music
+Website: https://pixabay.com/music/techno-trance-cyber-security-237109/
 Artist Name: AUDIOTRACKS
 Song Name: cyber security
+
+Background Music
+Website: https://pixabay.com/sound-effects/musical-action-loop-e-90-bpm-brvhrtz-233462/
+Artist Name: BRVHRTZ
+Song Name: Action loop E 90 BPM 
+
+Token Collect Sound Effect
+Website: https://pixabay.com/sound-effects/film-special-effects-coin-257878/
+Artist Name: chieuk
+Sound Effect Name: coin
+
+Asset Packages
+Simple Gems and Items Ultimate Animated Customizable Pack by BenjaTheMaker
+https://assetstore.unity.com/packages/3d/props/simple-gems-and-items-ultimate-animated-customizable-pack-73764
+
+Sherbb's Particle Collection by Sherbb
+https://assetstore.unity.com/packages/vfx/particles/sherbb-s-particle-collection-170798
+
+Starfield Skybox by PULSAR BYTES
+https://assetstore.unity.com/packages/2d/textures-materials/sky/starfield-skybox-92717
+
+Starter Assets - ThirdPerson | URP by Unity Technologies
+https://assetstore.unity.com/packages/essentials/starter-assets-thirdperson-urp-196526
+
+Volumetric Lines by Johannes Unterguggenberger
+https://assetstore.unity.com/packages/tools/particles-effects/volumetric-lines-29160
+
+Player 3D Model Character & Animations
+Character Model Design Name: Alien Soldier
+Website: https://www.mixamo.com/#/?page=1&type=Character
+
+Character Model Animation Names: Running, Falling Back Death, Running Jump
+Website: https://www.mixamo.com/#/?page=1&type=Motion%2CMotionPack
+
+Font
+Font Name: Sprintura Demo
+Website: https://www.1001fonts.com/search.html?search=sprintura
+
+Images
+Checkerboard Design png from Google Search Images

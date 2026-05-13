@@ -972,53 +972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!1 &1020099101
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1020099102}
-  - component: {fileID: 1020099103}
-  m_Layer: 0
-  m_Name: Finishline Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1020099102
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020099101}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.82926, y: 0, z: 531.7541}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1020099103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020099101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 634965db8bac0c242834443384536679, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FinishlineSpawner
-  finishLinePrefab: {fileID: 6434868545802636276, guid: a8245f8cf70cf3240bd72a27d62264ec, type: 3}
-  player: {fileID: 1413780192}
-  spawnDistance: 50
 --- !u!224 &1215946098 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8892224244125084019, guid: 9e55d9b4642484f41be20c69a9b48063, type: 3}
@@ -1960,7 +1913,7 @@ PrefabInstance:
     - target: {fileID: 9069278256167142714, guid: c36c904daf274644d9e28e704b67656d, type: 3}
       propertyPath: groundTilePrefab
       value: 
-      objectReference: {fileID: 6128120716343581853, guid: 804fcd138bf820d4790f650fb15e6a93, type: 3}
+      objectReference: {fileID: 2471771985654577306, guid: b4297289d33c38c48a302fc9dd11afcd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2616,4 +2569,3 @@ SceneRoots:
   - {fileID: 655407612}
   - {fileID: 6120767325300695224}
   - {fileID: 8675303142243432417}
-  - {fileID: 1020099102}
