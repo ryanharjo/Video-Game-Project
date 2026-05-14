@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverRoutine()
     {
         Debug.Log("Game Over");
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSecondsRealtime(1.5f);
         Time.timeScale = 0f;
         UIManager.Instance?.ShowGameOverUI();
     }
