@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject winPanel;
     public GameObject countdownPanel;
-
+    
     private void Awake()
     {
         Instance = this;
@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
         if (pausePanel != null) pausePanel.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (winPanel != null) winPanel.SetActive(false);
+        if (countdownPanel != null) countdownPanel.SetActive(false);
         if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 

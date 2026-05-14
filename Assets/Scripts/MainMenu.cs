@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     public GameObject mainPanel;
     public GameObject creditsPanel;
     public GameObject settingsPanel;
+    public GameObject controlsPanel;
 
     [Header("UI Elements")]
     [SerializeField] private Slider masterSlider;
@@ -23,6 +24,8 @@ public class MainMenu : MonoBehaviour
         ShowMain();
         SetupSliders();
     }
+
+    public void OpenControls() => SwitchPanel(controlsPanel);
 
     private void SetupSliders()
     {
@@ -67,5 +70,6 @@ public class MainMenu : MonoBehaviour
         mainPanel.SetActive(activePanel == mainPanel);
         creditsPanel.SetActive(activePanel == creditsPanel);
         settingsPanel.SetActive(activePanel == settingsPanel);
+        controlsPanel.SetActive(activePanel == controlsPanel);
     }
 }
