@@ -14,5 +14,13 @@ namespace StarterAssets
                 playerRunner.MoveInput(virtualMoveDirection);
             }
         }
+
+        public void JumpInput(bool newJumpState)
+        {
+            if (playerRunner != null)
+            {
+                playerRunner.JumpInput(newJumpState);
+            }
+        }
     }
 }

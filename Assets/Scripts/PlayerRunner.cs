@@ -91,7 +91,7 @@ public class PlayerRunner : MonoBehaviour
             }
         }
 
-        if (jumpAction.triggered || mobileJumpInput && controller.isGrounded)
+        if ((jumpAction.triggered || mobileJumpInput) && controller.isGrounded)
         {
             velocity.y = jumpForce;
 
@@ -187,13 +187,13 @@ public class PlayerRunner : MonoBehaviour
         }
     }
 
-    public void MoveInput(Vector2 value)
+    public void MoveInput(Vector2 newMoveDirection)
     {
-        mobileMoveInput = value;
+        mobileMoveInput = newMoveDirection;
     }
 
-    public void JumpInput(bool value)
+    public void JumpInput(bool newJumpState)
     {
-        mobileJumpInput = value;
+        mobileJumpInput = newJumpState;
     }
 }

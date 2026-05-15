@@ -11826,6 +11826,7 @@ GameObject:
   - component: {fileID: -5854937350298628760}
   - component: {fileID: 6918597175072526429}
   - component: {fileID: -7419063260032454717}
+  - component: {fileID: 8610645781681954614}
   m_Layer: 0
   m_Name: Obstacle V2
   m_TagString: Obstacle
@@ -11913,6 +11914,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8610645781681954614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348748316079124932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8760a47672d378344ba7e83c63059988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleDisable
+  disableDistance: 20
 --- !u!1 &6153690530059124554
 GameObject:
   m_ObjectHideFlags: 0

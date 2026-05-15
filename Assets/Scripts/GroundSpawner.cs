@@ -9,15 +9,27 @@ public class GroundSpawner : MonoBehaviour
 
     [Header("Player & Tiles")]
     public Transform player;
-    private float tileLength = 10f;
-    private int tilesOnScreen = 5;
-    private float spawnZ = 0f;
+    public float tileLength = 10f;
+    public int tilesOnScreen = 5;
 
-    private bool finishSpawned = false; // finish line spawned?
+    [Header("Pool Settings")]
+    public int groundPoolSize = 10;
+    public int finishPoolSize = 2;
+
+    private float spawnZ = 0f;
+    private bool finishSpawned = false;
+
+    private List<GameObject> groundPool = new List<GameObject>();
+    private List<GameObject> finishPool = new List<GameObject>();
+
+    private int groundIndex = 0;
+    private int finishIndex = 0;
 
     void Start()
     {
-        // Spawn initial tiles
+        CreatePools();
+
+        // Spawn starting tiles
         for (int i = 0; i < tilesOnScreen; i++)
         {
             SpawnTile();
@@ -27,25 +39,75 @@ public class GroundSpawner : MonoBehaviour
     void Update()
     {
         if (finishSpawned) return;
+
         if (player.position.z > spawnZ - (tilesOnScreen * tileLength))
         {
             SpawnTile();
         }
     }
 
-    
-    public void SpawnTile()
+    void CreatePools()
     {
-        GameObject tileToSpawn = groundTilePrefab;
-
-        
-        if (!finishSpawned && GameManager.Instance.tokens >= GameManager.Instance.targetTokens)
+        // Ground pool
+        for (int i = 0; i < groundPoolSize; i++)
         {
-            tileToSpawn = finishLinePrefab;
-            finishSpawned = true;
+            GameObject obj = Instantiate(groundTilePrefab);
+            obj.SetActive(false);
+
+            groundPool.Add(obj);
         }
 
-        Instantiate(tileToSpawn, Vector3.forward * spawnZ, Quaternion.identity);
+        // Finish line pool
+        for (int i = 0; i < finishPoolSize; i++)
+        {
+            GameObject obj = Instantiate(finishLinePrefab);
+            obj.SetActive(false);
+
+            finishPool.Add(obj);
+        }
+    }
+
+    public void SpawnTile()
+    {
+        GameObject tile;
+
+        // Spawn finish line when target reached
+        if (!finishSpawned &&
+            GameManager.Instance.tokens >= GameManager.Instance.targetTokens)
+        {
+            tile = finishPool[finishIndex];
+
+            finishIndex++;
+
+            if (finishIndex >= finishPool.Count)
+            {
+                finishIndex = 0;
+            }
+
+            finishSpawned = true;
+        }
+        else
+        {
+            tile = groundPool[groundIndex];
+
+            groundIndex++;
+
+            if (groundIndex >= groundPool.Count)
+            {
+                groundIndex = 0;
+            }
+        }
+
+        tile.transform.position = Vector3.forward * spawnZ;
+        tile.transform.rotation = Quaternion.identity;
+
+        tile.SetActive(true);
+
         spawnZ += tileLength;
+    }
+
+    public void DisableTile(GameObject tile)
+    {
+        tile.SetActive(false);
     }
 }
