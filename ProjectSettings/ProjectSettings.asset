@@ -303,7 +303,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 87eed11c68e49bb4aa79d02e0be3150b, type: 3}
+      m_Icon: {fileID: 2800000, guid: f0a54e39f4b288045a7935e429cdde3f, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -748,7 +748,16 @@ PlayerSettings:
   metroCertificateIssuer: GCTC
   metroCertificateNotAfter: 80e8ef0cf105de01
   metroApplicationDescription: Video-Game-Project
-  wsaImages: {}
+  wsaImages:
+    65636: Assets/Cyber Sprinter logo - Store icon 50x50 (scale 100%).png
+    131272: Assets/Cyber Sprinter logo - Splashscreen - 1240x600 (scale 200%).png
+    2031640: Assets/Cyber Sprinter logo 24x24 - Square 44x44 logo.png
+    2031716: Assets/Cyber Sprinter logo 44x44.png
+    2031816: Assets/Cyber Sprinter logo 88x88 - Square 44x44 logo.png
+    2097252: Assets/Cyber Sprinter logo - 71x71.png
+    2097352: Assets/Cyber Sprinter logo 142x142 - Square 71x71 logo.png
+    2162888: Assets/Cyber Sprinter logo 300x300 - Square 150x150 logo.png
+    2293960: Assets/Cyber Sprinter logo 620x300.png
   metroTileShortName: Video-Game-Project
   metroTileShowName: 0
   metroMediumTileShowName: 0
@@ -763,7 +772,11 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   syncCapabilities: 0
   platformCapabilities: {}
-  metroTargetDeviceFamilies: {}
+  metroTargetDeviceFamilies:
+    Desktop: True
+    IoTHeadless: False
+    Mobile: True
+    Xbox: True
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
